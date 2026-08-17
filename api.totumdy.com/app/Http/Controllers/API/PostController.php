@@ -99,6 +99,7 @@ class PostController extends Controller
             'body' => 'nullable|string|max:1000',
             'media_url' => 'nullable|url|max:500',
             'media_type' => 'nullable|in:image,audio,video',
+            'category' => 'required|in:memes,study,entertainment,announcement,news',
         ]);
 
         // Ensure at least body or media is provided
@@ -112,6 +113,7 @@ class PostController extends Controller
             'body' => $validated['body'] ?? null,
             'media_url' => $validated['media_url'] ?? null,
             'media_type' => $validated['media_type'] ?? null,
+            'category' => $validated['category'],
         ]);
 
         // Load user for consistent response

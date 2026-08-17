@@ -56,19 +56,19 @@ export default function ReportUser({
     };
 
     return (
-        <section className="auth-section overflow-y-auto no-scrollbar rounded-3xl h-[540px] mr-8 my-auto bg-[#5978A433] font-balthazar overflow-hidden py-5 w-full">
+        <section className="auth-section rounded-3xl lg:h-[540px] lg:mr-8 my-4 lg:my-auto bg-[#5978A433] font-balthazar lg:overflow-hidden py-5 w-full">
             {error && (
-                <div className="error-message text-red-500 absolute left-90 top-25 z-99 text-xl cherry-bomb">
+                <div className="error-message text-red-500 relative text-center text-lg sm:text-xl cherry-bomb mb-3">
                     {error}
                 </div>
             )}
             {successMessage && (
-                <div className="success-message absolute left-90 top-25 z-99 text-green-500 text-xl cherry-bomb">
+                <div className="success-message relative text-center text-green-500 text-lg sm:text-xl cherry-bomb mb-3">
                     {successMessage}
                 </div>
             )}
 
-            <div className="edit-profile-container boxshadow  rounded-4xl px-7 pt-2 mx-auto flex flex-col overflow-y-auto no-scrollbar w-120 h-full">
+            <div className="edit-profile-container boxshadow  rounded-4xl px-4 sm:px-7 pt-2 mx-auto flex flex-col w-full lg:w-120 lg:h-full lg:overflow-y-auto lg:no-scrollbar">
                 <div className="chat-header -mx-7 py-3 border-b-2 border-b-cyan-50/70 ">
                     <h2 className="text-2xl text-center">Report Trendmate</h2>
                 </div>

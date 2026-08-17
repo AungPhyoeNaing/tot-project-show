@@ -47,7 +47,7 @@ export default function UserGrid({
     };
 
     return (
-        <div className="user-grid grid grid-cols-3 gap-4">
+        <div className="user-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {validUsers.length === 0 ? (
                 <p className="no-users error-message cherry-bomb text-xl text-red-500">
                     No users found
@@ -62,14 +62,14 @@ export default function UserGrid({
                     return (
                         <div
                             key={user.id}
-                            className="user-card boxshadow1 py-4 px-15 flex flex-col justify-center items-center w-fit rounded-xl"
+                            className="user-card boxshadow1 py-4 px-6 sm:px-15 flex flex-col justify-center items-center w-full sm:w-fit rounded-xl"
                         >
                             <div
                                 className="user-avatar"
                                 onClick={() => onViewProfile(user.id)}
                             >
                                 <img
-                                    className="w-25 h-25 rounded-xl"
+                                    className="w-20 h-20 sm:w-25 sm:h-25 rounded-xl"
                                     src={
                                         user.avatar || "assets/images/user.png"
                                     }
@@ -78,7 +78,7 @@ export default function UserGrid({
                             </div>
                             <div className="user-details flex flex-col justify-center items-center mb-2">
                                 <h3
-                                    className="text-3xl"
+                                    className="text-xl sm:text-3xl text-center"
                                     onClick={() => onViewProfile(user.id)}
                                 >
                                     {user.name || "Unknown User"}

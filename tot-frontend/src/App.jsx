@@ -621,7 +621,7 @@ export default function App() {
         // This loading check happens *after* the effect has run its course initially
         console.log("App.jsx: Rendering loading screen.");
         return (
-            <div className="centered-container">
+            <div className="centered-container min-h-screen">
                 <Header
                     user={user}
                     currentView={currentView}
@@ -646,10 +646,10 @@ export default function App() {
     }
 
     return (
-        <div className="centered-container h-screen">
-            <main className="centered-main flex gap-2">
+        <div className="centered-container min-h-screen lg:h-screen lg:overflow-hidden">
+            <main className="centered-main flex flex-col lg:flex-row gap-2 pb-[72px] lg:pb-0">
                 {error && (
-                    <div className="error-message text-red-500 cherry-bomb absolute text-xl left-120 z-99 top-5">
+                    <div className="error-message text-red-500 cherry-bomb absolute text-sm sm:text-xl left-4 right-4 sm:left-120 sm:right-auto z-99 top-5 text-center">
                         {error}
                     </div>
                 )}
@@ -768,7 +768,7 @@ export default function App() {
                                 />
                             </>
                         ) : (
-                            <div className="mx-auto my-auto rounded-2xl text-teamcolor bg-[#5978A433]/30 bg-blur-2xl cherry-bomb text-xl overflow-hidden p-10 w-fit flex flex-col items-center">
+                            <div className="w-full min-h-[calc(100vh-120px)] sm:min-h-0 sm:w-fit mx-auto my-auto rounded-2xl text-teamcolor bg-[#5978A433]/30 bg-blur-2xl cherry-bomb text-xl overflow-hidden p-10 flex flex-col items-center justify-center">
                                 <h3>You have no recent chats.</h3>
                                 <p className="mb-3">
                                     Connect with trendmates to have some fun!

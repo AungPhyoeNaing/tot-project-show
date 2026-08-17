@@ -2,97 +2,108 @@
 @import "tailwindcss";
 
 body {
-    max-width: 100vw;
-    max-height: 100vh;
-    box-sizing: border-box;
+  max-width: 100vw;
+  max-height: 100vh;
+  box-sizing: border-box;
+  background-image: url("/assets/images/totLoginbg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .font-balthazar {
-    font-family: "Balthazar", serif;
-    font-weight: 200;
-    font-style: normal;
+  font-family: "Balthazar", serif;
+  font-weight: 200;
+  font-style: normal;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .error-message {
-    -webkit-animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955)
-        both;
-    animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  -webkit-animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
+  animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
 }
 
 .success-message {
-    -webkit-animation: scale-in-hor-center 0.5s
-        cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-    animation: scale-in-hor-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-        both;
+  -webkit-animation: scale-in-hor-center 0.5s
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: scale-in-hor-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @-webkit-keyframes scale-in-hor-center {
-    0% {
-        -webkit-transform: scaleX(0);
-        transform: scaleX(0);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: scaleX(1);
-        transform: scaleX(1);
-        opacity: 1;
-    }
+  0% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    opacity: 1;
+  }
 }
 @keyframes scale-in-hor-center {
-    0% {
-        -webkit-transform: scaleX(0);
-        transform: scaleX(0);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: scaleX(1);
-        transform: scaleX(1);
-        opacity: 1;
-    }
+  0% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    opacity: 1;
+  }
 }
 
 /* HTML: <div class="loader"></div> */
 .loader {
-    display: inline-flex;
-    gap: 5px;
-    animation: l3-0 1s infinite;
-    transform-origin: 50% calc(100% + 2.5px);
-    position: absolute;
-    left: 550px;
-    top: 200px;
+  display: inline-flex;
+  gap: 5px;
+  animation: l3-0 1s infinite;
+  transform-origin: 50% calc(100% + 2.5px);
+  position: absolute;
+  left: 550px;
+  top: 200px;
 }
 .loader:before,
 .loader:after {
-    content: "";
-    width: 40px;
-    aspect-ratio: 1;
-    box-shadow: 0 0 0 3px inset #fff;
+  content: "";
+  width: 40px;
+  aspect-ratio: 1;
+  box-shadow: 0 0 0 3px inset #fff;
 }
 .loader:after {
-    transform-origin: -2.5px calc(100% + 2.5px);
-    animation: l3-1 1s infinite;
+  transform-origin: -2.5px calc(100% + 2.5px);
+  animation: l3-1 1s infinite;
 }
 @keyframes l3-1 {
-    50%,
-    100% {
-        transform: rotate(180deg);
-    }
+  50%,
+  100% {
+    transform: rotate(180deg);
+  }
 }
 @keyframes l3-0 {
-    0%,
-    50% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(90deg);
+  0%,
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+/* ============ Responsive fixes ============ */
+@media (max-width: 1023px) {
+    .loader {
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
     }
 }

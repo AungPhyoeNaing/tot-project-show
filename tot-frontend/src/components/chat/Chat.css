@@ -2,121 +2,123 @@
 @import "tailwindcss";
 
 .font-balthazar {
-    font-family: "Balthazar", serif;
-    font-weight: 200;
-    font-style: normal;
+  font-family: "Balthazar", serif;
+  font-weight: 200;
+  font-style: normal;
 }
 
 .boxshadow {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
-        2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
+    2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     border-right: 1px solid rgba(255, 255, 255, 0.18); */
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
 
 .boxshadow2 {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
-        2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
+    2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     border-right: 1px solid rgba(255, 255, 255, 0.18); */
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
 
 .boxshadow2:active {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* border-bottom: 1px solid rgba(89, 120, 164, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-bottom: 1px solid rgba(89, 120, 164, 0.3);
     border-right: 1px solid rgba(89, 120, 164, 0.3); */
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
 
 :root {
-    --chat-bg: #1e1e1e;
-    --chat-header-bg: #252525;
-    --chat-messages-bg: #1a1a1a;
-    --chat-border: #333333;
-    --chat-input-bg: #2d2d2d;
-    --bubble-incoming: #2d2d2d;
-    --bubble-outgoing: linear-gradient(135deg, #646cff, #8a8aff);
-    --text-primary: #ffffff;
-    --text-secondary: #e0e0e0;
-    --text-muted: #aaaaaa;
-    --text-incoming: #e0e0e0;
-    --text-outgoing: #ffffff;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
-    --transition-fast: all 0.2s ease;
-    --transition-normal: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --chat-bg: #1e1e1e;
+  --chat-header-bg: #252525;
+  --chat-messages-bg: #1a1a1a;
+  --chat-border: #333333;
+  --chat-input-bg: #2d2d2d;
+  --bubble-incoming: #2d2d2d;
+  --bubble-outgoing: linear-gradient(135deg, #646cff, #8a8aff);
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #aaaaaa;
+  --text-incoming: #e0e0e0;
+  --text-outgoing: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --transition-fast: all 0.2s ease;
+  --transition-normal: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .chat-messages-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    scroll-behavior: smooth;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
 }
 
 /* Style for individual message bubbles */
 .message-bubble {
-    max-width: 65%;
-    padding: 10px 15px;
-    margin-bottom: 5px;
-    border-radius: 18px;
-    position: relative;
-    word-wrap: break-word;
-    animation: fadeIn 0.3s ease-out;
-    font-size: 0.95rem;
-    transition: var(--transition-fast);
+  max-width: 65%;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  border-radius: 18px;
+  position: relative;
+  word-wrap: break-word;
+  animation: fadeIn 0.3s ease-out;
+  font-size: 0.95rem;
+  transition: var(--transition-fast);
 }
 
 .message-bubble:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Incoming messages (from others) */
 .message-incoming {
-    align-self: flex-start;
-    background-color: var(--bubble-incoming);
-    color: var(--text-incoming);
-    border-bottom-left-radius: 6px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom-right-radius: 18px;
+  align-self: flex-start;
+  background-color: var(--bubble-incoming);
+  color: var(--text-incoming);
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
 
 /* Outgoing messages (from current user) */
 .message-outgoing {
-    align-self: flex-end;
-    background: var(--bubble-outgoing);
-    color: var(--text-outgoing);
-    border-bottom-right-radius: 6px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom-left-radius: 18px;
-    box-shadow: 0 4px 15px rgba(100, 108, 255, 0.3);
+  align-self: flex-end;
+  background: var(--bubble-outgoing);
+  color: var(--text-outgoing);
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  border-bottom-left-radius: 18px;
+  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.3);
 }
 
 /* Timestamp styling */
 .message-timestamp {
-    display: block;
-    font-size: 0.7rem;
-    margin-top: 8px;
-    opacity: 0.7;
-    text-align: right;
-    font-weight: 500;
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 8px;
+  opacity: 0.7;
+  text-align: right;
+  font-weight: 500;
 }

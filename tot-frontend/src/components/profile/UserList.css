@@ -2,48 +2,60 @@
 @import "tailwindcss";
 
 .balsamiq-sans {
-    font-family: "Balsamiq Sans", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Balsamiq Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.textxxs {
+  font-size: 9px;
 }
 
 .user-list {
-    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 10px -12px inset,
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 10px -12px inset,
         rgba(0, 0, 0, 0.3) 0px 18px 30px -1px inset; */
 
-    box-shadow: inset 0px 6px 4px 7px #00000024;
+  box-shadow: inset 0px 6px 4px 7px #00000024;
+}
+
+/* Soften the heavy inset shadow on the slim mobile horizontal bar */
+@media (max-width: 1023px) {
+  .user-list {
+    box-shadow: inset 0px 2px 2px 2px #00000018;
+  }
 }
 
 .status {
-    position: absolute;
-    width: fit-content;
-    padding: 1px 6px;
-    color: white;
-    font-size: 12px;
-    border-radius: 5px;
-    bottom: 1px;
-    right: -16px;
+  position: absolute;
+  width: fit-content;
+  padding: 1px 6px;
+  color: white;
+  font-size: 12px;
+  border-radius: 5px;
+  bottom: 1px;
+  right: -16px;
 }
 
 .boxshadow2 {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
-        2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
+    2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     border-right: 1px solid rgba(255, 255, 255, 0.18); */
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
 
 .boxshadow2:active {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* border-bottom: 1px solid rgba(89, 120, 164, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-bottom: 1px solid rgba(89, 120, 164, 0.3);
     border-right: 1px solid rgba(89, 120, 164, 0.3); */
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
 }

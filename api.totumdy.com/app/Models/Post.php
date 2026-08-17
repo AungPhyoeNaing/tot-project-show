@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['body', 'shared_post_id', 'media_url', 'media_type',];
+    protected $fillable = ['body', 'shared_post_id', 'media_url', 'media_type', 'category',];
 
     public function user(): BelongsTo
     {

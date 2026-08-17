@@ -171,3 +171,13 @@
         box-sizing: border-box;
     }
 }
+
+/* Responsive media previews */
+.media-preview-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.media-preview {
+    max-width: 100%;
+}

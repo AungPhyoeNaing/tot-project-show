@@ -69,14 +69,14 @@ const EditProfile = ({ user, onUpdateProfile, onGoToMyProfile }) => {
     };
 
     return (
-        <section className="editContainer overflow-y-auto no-scrollbar rounded-3xl h-[540px] mr-8 my-auto bg-[#5978A433] font-balthazar overflow-hidden py-5 w-full">
-            <div className="edit-profile-container boxshadow  rounded-4xl px-7 pt-2 mx-auto flex flex-col overflow-y-auto no-scrollbar w-120 h-full">
+        <section className="editContainer rounded-3xl lg:h-[540px] lg:mr-8 my-4 lg:my-auto bg-[#5978A433] font-balthazar lg:overflow-hidden py-5 w-full">
+            <div className="edit-profile-container boxshadow  rounded-4xl px-4 sm:px-7 pt-2 mx-auto flex flex-col w-full lg:w-120 lg:h-full lg:overflow-y-auto lg:no-scrollbar">
                 <div className="chat-header -mx-7 py-3 border-b-2 border-b-cyan-50/70 ">
                     <h2 className="text-3xl text-center">Edit Profile</h2>
                 </div>
 
                 {error && (
-                    <p className="error-message text-red-500 cherry-bomb absolute text-xl left-120 z-99 top-5">
+                    <p className="error-message text-red-500 cherry-bomb absolute text-sm sm:text-xl left-4 right-4 sm:left-120 sm:right-auto z-99 top-5 text-center">
                         {error}
                     </p>
                 )}

@@ -2,6 +2,14 @@ import React from "react";
 //import "./Post.css"; // 👈 Reuse existing Post styling
 import "./PostCardStatic.css"; // 👈 New CSS for PostCardStatic
 
+const CATEGORY_NAMES = {
+    news: "News",
+    memes: "Memes",
+    entertainment: "Entertainment",
+    study: "Study",
+    announcement: "Announcement",
+};
+
 const PostCardStatic = ({ post }) => {
     const likes = post.likes_count || 0;
     const sads = post.sads_count || 0;
@@ -114,7 +122,7 @@ const PostCardStatic = ({ post }) => {
     // ✅ END NEW
 
     return (
-        <article className="post-card boxshadow relative w-full px-7 pt-5 pb-12 rounded-3xl shadow-lg">
+        <article className="post-card boxshadow relative w-full px-4 sm:px-7 pt-5 pb-12 rounded-3xl shadow-lg">
             {/* Header */}
             <header className="post-header flex justify-between items-start">
                 <div className="mb-4 flex items-center">
@@ -126,7 +134,7 @@ const PostCardStatic = ({ post }) => {
                         />
                     </div>
                     <div className="post-header-info flex flex-col  ">
-                        <strong className="chicle-regular font-bold text-2xl">
+                        <strong className="chicle-regular font-bold text-xl sm:text-2xl">
                             {post.user?.name || "Unknown User"}
                         </strong>
                         <small>
@@ -134,8 +142,14 @@ const PostCardStatic = ({ post }) => {
                         </small>
                     </div>
                 </div>
-                {isShared && (
-                    <div className="shared-indicator">
+                <div className="flex flex-col items-end gap-1">
+                    {post.category && (
+                        <span className="cat-badge boxshadow px-2 py-0.5 rounded-2xl">
+                            {CATEGORY_NAMES[post.category] || post.category}
+                        </span>
+                    )}
+                    {isShared && (
+                        <div className="shared-indicator">
                         <svg
                             width="12"
                             height="12"
@@ -150,7 +164,8 @@ const PostCardStatic = ({ post }) => {
                         </svg>
                         Shared
                     </div>
-                )}
+                    )}
+                </div>
             </header>
 
             {/* Body */}

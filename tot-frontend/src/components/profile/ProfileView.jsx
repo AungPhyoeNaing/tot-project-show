@@ -43,13 +43,13 @@ export default function ProfileView({
     };
 
     return (
-        <div className="profile-container w-full overflow-y-auto no-scrollba rounded-3xl h-[552px] mr-4 my-4 bg-[#5978A433] font-balthazar overflow-hidden p-7">
+        <div className="profile-container w-full lg:overflow-y-auto lg:no-scrollbar rounded-3xl lg:h-[552px] lg:mr-4 my-4 bg-[#5978A433] font-balthazar overflow-visible lg:overflow-hidden p-4 sm:p-7">
             {/* Profile Header Section */}
-            <div className="profile-header outline-1 outline-cyan-50/80 rounded-3xl px-7 py-4 mb-6 flex gap-10 bg-white/10 shadow-lg">
+            <div className="profile-header outline-1 outline-cyan-50/80 rounded-3xl px-4 sm:px-7 py-4 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-10 bg-white/10 shadow-lg">
                 {/* Profile Avatar/Image */}
                 <div className="profile-avatar ">
                     <img
-                        className="w-28 h-28 rounded-xl object-cover"
+                        className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover"
                         // Use the profileUser's avatar field (returned by backend), fallback to placeholder if not available
                         src={profileUser.avatar || "assets/images/user.png"} // Changed this line to use 'avatar'
                         alt={`${profileUser.name || "User"}'s avatar`}
@@ -60,20 +60,20 @@ export default function ProfileView({
                 <div className="profile-info  w-full flex flex-col justify-between gap-3">
                     {/* User's Name and Handle */}
                     <div>
-                        <h1 className="text-5xl ">
+                        <h1 className="text-3xl sm:text-5xl text-center sm:text-left ">
                             {profileUser.name || "Unknown User"}
                         </h1>
-                        <p className="text-sm">
+                        <p className="text-sm text-center sm:text-left">
                             {profileUser.email || "No email"}
                         </p>
                     </div>
 
                     {isOwnProfile && (
-                        <div className="profile-actions flex justify-start items-center gap-48 max-md:gap-20">
+                        <div className="profile-actions flex flex-wrap justify-center sm:justify-start items-center gap-4 sm:gap-48">
                             {" "}
                             {/* Container for Edit profile buttons */}
                             <button
-                                className="py-1 px-12 rounded-xl text-xl boxshadow2 boxshadow cursor-pointer"
+                                className="py-1 px-8 sm:px-12 rounded-xl text-base sm:text-xl boxshadow2 boxshadow cursor-pointer"
                                 onClick={onGoToEditProfile}
                             >
                                 Edit Profile
@@ -84,12 +84,12 @@ export default function ProfileView({
                     {/* Action Buttons (Follow/Unfollow and Message) */}
                     {/* Only show action buttons if it's not the user's own profile */}
                     {!isOwnProfile && (
-                        <div className="profile-actions flex justify-start items-center gap-48 max-md:gap-20">
+                        <div className="profile-actions flex flex-wrap justify-center sm:justify-start items-center gap-4 sm:gap-48">
                             {" "}
                             {/* Container for buttons */}
                             {/* Follow/Unfollow Button */}
                             <button
-                                className="py-1 px-12 rounded-xl text-xl boxshadow2 boxshadow cursor-pointer"
+                                className="py-1 px-8 sm:px-12 rounded-xl text-base sm:text-xl boxshadow2 boxshadow cursor-pointer"
                                 onClick={handleFollowAction}
                             >
                                 {isFollowing ? "Unfollow" : "Follow"}
@@ -98,7 +98,7 @@ export default function ProfileView({
                             {/* Added onClick handler to initiate chat with this user */}
                             {isMutualFollow && onChat && (
                                 <button
-                                    className="message-button py-1 px-12 rounded-xl text-xl boxshadow2 boxshadow cursor-pointer" // You can style this class in your CSS
+                                    className="message-button py-1 px-8 sm:px-12 rounded-xl text-base sm:text-xl boxshadow2 boxshadow cursor-pointer" // You can style this class in your CSS
                                     onClick={() => onChat(profileUser)} // Pass the entire profileUser object
                                 >
                                     Message
@@ -106,7 +106,7 @@ export default function ProfileView({
                             )}
                             {/* Updated button handler to pass both user.id and user.name */}
                             <button
-                                className=" report-btn py-1 px-12 rounded-xl text-xl boxshadow2 boxshadow cursor-pointer"
+                                className=" report-btn py-1 px-8 sm:px-12 rounded-xl text-base sm:text-xl boxshadow2 boxshadow cursor-pointer"
                                 onClick={() =>
                                     onReportUser(
                                         profileUser.id,
@@ -122,12 +122,12 @@ export default function ProfileView({
             </div>
 
             {/* Profile Tabs */}
-            <div className="profile-tabs flex justify-around items-center text-[22px] border-b-2 border-b-cyan-50/70 -mx-7 h-10">
+            <div className="profile-tabs flex justify-around items-center text-sm sm:text-[22px] border-b-2 border-b-cyan-50/70 -mx-4 sm:-mx-7 h-10">
                 <button
                     className="cursor-pointer hover:border-b-2 hover:border-b-teamcolor duration-50 ease-in-out focus:border-b-2 focus:border-b-teamcolor"
                     onClick={() => setActiveTab("following")}
                 >
-                    <span className="text-2xl boxshadow2 px-2 py-1 rounded-xl ">
+                    <span className="text-base sm:text-2xl boxshadow2 px-2 py-1 rounded-xl ">
                         {profileData.following?.length ?? 0}
                     </span>{" "}
                     Following
@@ -136,7 +136,7 @@ export default function ProfileView({
                     className="cursor-pointer hover:border-b-2 hover:border-b-teamcolor duration-50 ease-in-out focus:border-b-2 focus:border-b-teamcolor"
                     onClick={() => setActiveTab("followers")}
                 >
-                    <span className="text-2xl boxshadow2 px-2 py-1 rounded-xl ">
+                    <span className="text-base sm:text-2xl boxshadow2 px-2 py-1 rounded-xl ">
                         {profileData.followers?.length ?? 0}
                     </span>{" "}
                     Followers
@@ -146,7 +146,7 @@ export default function ProfileView({
                     className="cursor-pointer hover:border-b-2 hover:border-b-teamcolor duration-50 ease-in-out focus:border-b-2 focus:border-b-teamcolor"
                     onClick={() => setActiveTab("posts")}
                 >
-                    <span className="text-2xl boxshadow2 px-2 py-1 rounded-xl ">
+                    <span className="text-base sm:text-2xl boxshadow2 px-2 py-1 rounded-xl ">
                         {profileData.posts?.length ?? 0}
                     </span>{" "}
                     Posts
@@ -182,7 +182,7 @@ export default function ProfileView({
                 )}
 
                 {activeTab === "posts" && (
-                    <div className="posts-grid p-2 grid grid-cols-2 gap-5">
+                    <div className="posts-grid p-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {profileData.posts && profileData.posts.length > 0 ? (
                             profileData.posts.map((post) => (
                                 <PostCardStatic key={post.id} post={post} />

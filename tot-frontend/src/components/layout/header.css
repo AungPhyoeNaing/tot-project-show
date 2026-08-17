@@ -1,139 +1,150 @@
 @import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap");
 @import "tailwindcss";
 
-.logo {
-    border: 1px;
-    padding-y: 12px;
-    background-color: #f5eb27;
-    text-align: center;
-    width: fit;
-    rounded: 50%;
-    font-family: "Cherry Bomb One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-}
+/* .logo {
+  border: 1px;
+  padding-y: 12px;
+  background-color: #f5eb27;
+  text-align: center;
+  width: fit;
+  rounded: 50%;
+  font-family: "Cherry Bomb One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+} */
 
 .cherry-bomb {
-    font-family: "Cherry Bomb One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Cherry Bomb One", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .mouse:hover {
-    background-color: #8ec5ff;
-    padding: 0.5rem;
-    border-radius: 100%;
-    outline: 1px solid #193cb8;
-    transition: all 0.3s ease-in-out;
+  background-color: #8ec5ff;
+  padding: 0.5rem;
+  border-radius: 100%;
+  outline: 1px solid #193cb8;
+  transition: all 0.3s ease-in-out;
 }
 
 .icon {
-    transition: all 0.3s ease-in-out;
-    background-size: cover;
-    background-position: center;
-    width: 31px;
-    height: 31px;
-    cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  width: 31px;
+  height: 31px;
+  cursor: pointer;
 }
 
 /* Category animation */
 .menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 88;
-    width: 180px;
-    height: 220px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 88;
+  width: 180px;
+  height: 220px;
 }
 
 .menu .toggle {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 1.25s;
-    z-index: 100;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 1.25s;
+  z-index: 100;
 }
 
-/* .menu li {
-    width: 50px;
-    height: 50px;
-    padding: 3px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+.menu li {
+  width: 50px;
+  height: 50px;
+  padding: 3px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 
-    left: 0;
-    top: 0;
-    list-style: none;
-    transition: 0.5s;
-    transform: rotate(calc((180deg / 4 * var(--i)) + 90deg));
-    transform-origin: 100px;
-    scale: 0;
-    z-index: 99;
-    cursor: pointer;
+  left: -70px;
+  bottom: 25px;
+  list-style: none;
+  transition: 0.5s;
+  transform: rotate(calc((180deg / 4 * var(--i)) + 90deg));
+  transform-origin: 100px;
+  scale: 0;
+  z-index: 99;
+  cursor: pointer;
 }
 
 .menu.active li {
-    scale: 1;
-} */
+  scale: 1;
+}
 
-/* .menu li img {
-    position: relative;
-    width: 20px;
-    height: 20px;
-    transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
-    color: var(--clr);
-    transition: 0.5s;
-    text-decoration: none;
-} */
+.menu li img {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
+  color: var(--clr);
+  transition: 0.5s;
+  text-decoration: none;
+}
 
 .menu li:hover img {
-    scale: 1.4;
+  scale: 1.4;
+}
+
+/* Selected category in the header menu */
+.menu li:has(input:checked) {
+  box-shadow: 0 0 0 3px var(--clr), 0 6px 24px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.menu li:has(input:checked) img {
+  scale: 1.35;
+  filter: brightness(1.15) saturate(1.3);
 }
 
 /* glass category button animation*/
 .glass-pills-list {
-    /* position: relative;
+  /* position: relative;
     margin-top: 0.8rem;
     display: flex;
     flex-wrap: wrap;
     gap: 1.2rem; */
-    /* perspective: 600px; */
+  /* perspective: 600px; */
 }
 
 .glass-pill {
-    /* cursor: pointer;
+  /* cursor: pointer;
     opacity: 0;
     transform: translateY(20px) rotateX(-25deg);
     transition: opacity 0.4s ease, transform 0.4s ease; */
-    width: 50px;
-    height: 50px;
-    padding: 3px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 3px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 
-    left: 0;
-    top: 0;
-    list-style: none;
-    transition: 0.5s;
-    transform: rotate(calc((180deg / 4 * (var(--i))) + 45deg));
-    transform-origin: 110px;
-    scale: 0;
-    transition-delay: calc(0.1s * var(--i));
-    z-index: 99;
-    cursor: pointer;
+  left: 0;
+  top: 0;
+  list-style: none;
+  transition: 0.5s;
+  transform: rotate(calc((180deg / 4 * (var(--i))) + 45deg));
+  transform-origin: 110px;
+  scale: 0;
+  transition-delay: calc(0.1s * var(--i));
+  z-index: 99;
+  cursor: pointer;
 }
 
 .menu.active .glass-pill {
-    scale: 1;
+  scale: 1;
 }
 
 /* .glass-pill.pop {
@@ -142,78 +153,200 @@
 } */
 
 .glass-pill input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .glass-pill span {
-    display: block;
-    padding: 0.4rem;
-    border-radius: 30%;
+  display: block;
+  padding: 0.4rem;
+  border-radius: 30%;
 
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
-    color: #fff;
-    transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
-    /* transition: background 0.25s ease, color 0.25s ease, border 0.25s ease,
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  color: #fff;
+  transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
+  /* transition: background 0.25s ease, color 0.25s ease, border 0.25s ease,
         box-shadow 0.25s ease, transform 0.2s ease; */
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
-        2px 4px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset -4px -2px 0.12px rgba(255, 255, 255, 0.5),
+    2px 4px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(12px);
 
-    border-top: 2px solid rgba(89, 120, 164, 0.3);
-    border-left: 3px solid rgba(89, 120, 164, 0.3);
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border-top: 2px solid rgba(89, 120, 164, 0.3);
+  border-left: 3px solid rgba(89, 120, 164, 0.3);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .glass-pill:hover span {
-    scale: 1.2;
+  scale: 1.2;
 }
 
 .glass-pill span:active {
-    transform: scale(0.96);
-    transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
+  transform: scale(0.96);
+  transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
 }
 
 .icon-span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    border: none;
-    background: none;
-    box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
 }
 
 .category-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    max-width: 100%;
-    max-height: 100%;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .glass-pill input:checked + span {
-    border: 0;
+  border: 0;
 }
 
 .glass-pill input:checked + .icon-span {
-    color: #000;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-    border: 1px solid #000;
-    transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
+  color: #000;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid #000;
+  transform: rotate(calc((180deg / -6 * var(--i)) - 90deg));
 }
 
 .glass-pill input:checked + .icon-span .category-icon {
-    filter: brightness(1.2) saturate(1.5);
+  filter: brightness(1.2) saturate(1.5);
+}
+
+/* ============ Responsive: Mobile / tablet bottom navigation bar ============ */
+@media (max-width: 1023px) {
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    flex-direction: row;
+    width: 100%;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 2px solid rgba(89, 120, 164, 0.35);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar .logo {
+    display: none;
+  }
+
+  .navbar .group {
+    flex: 1;
+    max-width: 72px;
+  }
+
+  .navbar .group p {
+    display: block;
+    visibility: visible;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Category flyout: fixed above the bar, near the category icon. Kept out of
+     the bar's flex flow so the 5 nav icons stay evenly spaced. */
+  .menu {
+    position: fixed;
+    bottom: 74px;
+    left: 30%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 260px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  /* Position the flyout items within the fixed box, above the bar */
+  .menu li {
+    left: 90px;
+    top: 240px;
+    pointer-events: auto;
+    transform: rotate(calc((180deg / 4 * (var(--i)))));
+    transform-origin: 100px;
+  }
+}
+
+@media (min-width: 400px) {
+  /* .menu {
+    position: fixed;
+    bottom: 74px;
+    left: 30%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 260px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    pointer-events: none;
+  } */
+
+  /* Position the flyout items within the fixed box, above the bar */
+  .menu li {
+    left: 1/2;
+    /* top: 240px; */
+    bottom: 0px;
+    pointer-events: auto;
+    transform: rotate(calc((180deg / 4 * var(--i))));
+    transform-origin: 100px;
+  }
+}
+
+/* ============ Desktop sidebar: keep nav icons evenly spaced ============ */
+@media (min-width: 1024px) {
+  /* Take the category flyout box out of the layout flow (it is a 180x220
+     placeholder) so the sidebar icons sit evenly spaced. The flyout list
+     stays absolutely positioned so it still animates open. */
+  .menu {
+    width: 0;
+    height: 0;
+    margin: -18px 0;
+    overflow: visible;
+  }
+
+  .menu li {
+    left: -80px;
+    top: -90px;
+    pointer-events: auto;
+    transform: rotate(calc((180deg / 4 * (var(--i))) + 90deg));
+    transform-origin: 100px;
+  }
+}
+
+/* ============ Responsive: Small screens below 400px ============ */
+@media (max-width: 400px) {
+  .navbar .group p {
+    display: none;
+  }
+
+  .navbar .group {
+    max-width: none;
+  }
 }

@@ -87,8 +87,8 @@ export default function PasswordResetRequest({ onBackToLogin }) {
     };
 
     return (
-        <section className="auth-section overflow-y-auto no-scrollbar rounded-3xl h-[540px] mx-8 my-5 bg-[#5978A433] font-balthazar overflow-hidden py-5 w-full">
-            <div className="edit-profile-container boxshadow  rounded-4xl px-7 pt-2 mx-auto flex flex-col overflow-y-auto no-scrollbar w-120 h-full">
+        <section className="auth-section rounded-3xl lg:h-[540px] mx-2 sm:mx-8 my-5 bg-[#5978A433] font-balthazar lg:overflow-hidden py-5 w-full">
+            <div className="edit-profile-container boxshadow  rounded-4xl px-4 sm:px-7 pt-2 mx-auto flex flex-col w-full lg:w-120 lg:h-full lg:overflow-y-auto lg:no-scrollbar">
                 <div className="chat-header -mx-7 py-1 border-b-2 border-b-cyan-50/70 ">
                     <h2 className="text-2xl text-center">
                         Password Reset Request

@@ -17,7 +17,7 @@ class MediaController extends Controller
                 'required',
                 'file',
                 'max:20480', // 20MB
-                'mimes:jpg,jpeg,png,gif,webp,mp3,wav,ogg,mp4,mov,avi,wmv,webm'
+                'mimes:jpg,jpeg,jfif,jpe,png,gif,webp,mp3,wav,ogg,mp4,mov,avi,wmv,webm'
             ]
         ]);
 
@@ -34,10 +34,13 @@ class MediaController extends Controller
         $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $uniqueFilename = $filename . '_' . time() . '.' . $extension;
 
+        // Detect type from the actual MIME content, not the extension,
+        // so JPEG variants like .jfif/.jpe are correctly classified as images.
+        $mime = $file->getMimeType();
         $typeFolder = match (true) {
-            in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']) => 'image',
-            in_array($extension, ['mp3', 'wav', 'ogg']) => 'audio',
-            in_array($extension, ['mp4', 'mov', 'avi', 'wmv', 'webm']) => 'video',
+            str_starts_with($mime, 'image/') => 'image',
+            str_starts_with($mime, 'audio/') => 'audio',
+            str_starts_with($mime, 'video/') => 'video',
             default => 'others'
         };
 
@@ -48,7 +51,7 @@ class MediaController extends Controller
             'data' => [
                 'url' => url(Storage::url($path)),
                 'type' => $typeFolder, // 'image', 'audio', 'video'
-                'mime' => $file->getMimeType(),
+                'mime' => $mime,
                 'size' => $file->getSize(),
             ]
         ]);
