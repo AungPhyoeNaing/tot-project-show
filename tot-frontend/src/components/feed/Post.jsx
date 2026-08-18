@@ -375,12 +375,12 @@ const Post = ({
           <img
             src={formatMediaUrl(
               post.user?.avatar || post.user?.profile_picture,
-              "/assets/images/user.png",
+              "/assets/images/pf4.png",
             )}
             alt={`${post.user?.name || "User"}'s avatar`}
             className="post-author-avatar rounded-2xl w-12 h-12 object-cover"
             onError={(e) => {
-              e.currentTarget.src = "/assets/images/user.png";
+              e.currentTarget.src = "/assets/images/pf4.png";
             }}
           />
         </div>
@@ -500,12 +500,12 @@ const Post = ({
                   src={formatMediaUrl(
                     post.shared_post.user?.avatar ||
                       post.shared_post.user?.profile_picture,
-                    "/assets/images/user.png",
+                    "/assets/images/pf4.png",
                   )} // Avatar for shared post author
                   alt={`${post.shared_post.user?.name || "User"} avatar`}
                   className="shared-post-author-avatar w-8 h-8 rounded-xl mr-2 object-cover" // Different class for sizing if needed
                   onError={(e) => {
-                    e.currentTarget.src = "/assets/images/user.png";
+                    e.currentTarget.src = "/assets/images/pf4.png";
                   }}
                 />
                 <strong className="chicle-regular">
@@ -674,13 +674,16 @@ const Post = ({
                     {/* Comment Author Avatar */}
                     <div className="comment-author flex gap-2 mb-3">
                       <img
-                        src={
+                        src={formatMediaUrl(
                           comment.user?.avatar ||
-                          comment.user?.profile_picture ||
-                          "https://placehold.co/24"
-                        } // Avatar for comment author
+                            comment.user?.profile_picture,
+                          "/assets/images/pf4.png",
+                        )} // Avatar for comment author
                         alt={`${comment.user?.name || "User"} avatar`}
-                        className="comment-author-avatar w-8 h-8 rounded-xl outline-1" // Different class for sizing if needed
+                        className="comment-author-avatar w-8 h-8 rounded-xl object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/assets/images/pf4.png";
+                        }}
                       />
                       <strong className="chicle-regular">
                         {comment.user?.name}:

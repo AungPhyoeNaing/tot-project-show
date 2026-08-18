@@ -188,8 +188,8 @@ const Chat = ({
   const rawAvatar =
     otherUserAvatar ||
     (typeof otherUserId === "object" ? otherUserId.avatar : null) ||
-    "/assets/images/user.png";
-  const avatarSrc = formatMediaUrl(rawAvatar, "/assets/images/user.png");
+    "/assets/images/pf4.png";
+  const avatarSrc = formatMediaUrl(rawAvatar, "/assets/images/pf4.png");
 
   return (
     <section className="container w-full mx-auto order-2 lg:flex-8 rounded-3xl h-[calc(100dvh-135px)] lg:h-[calc(100vh-35px)] lg:mr-4 my-0 lg:my-4 bg-[#5978A433] font-balthazar py-2 lg:py-4 px-1 sm:px-2 lg:px-4 min-w-0 flex flex-col">
@@ -214,7 +214,7 @@ const Chat = ({
               src={avatarSrc}
               alt={`${displayName}'s avatar`}
               onError={(e) => {
-                e.currentTarget.src = "/assets/images/user.png";
+                e.currentTarget.src = "/assets/images/pf4.png";
               }}
             />
             {/* Display Online Status */}

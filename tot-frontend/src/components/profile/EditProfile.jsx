@@ -108,11 +108,11 @@ const EditProfile = ({ user, onUpdateProfile, onGoToMyProfile }) => {
                         {previewUrl && (
                             <div className="image-preview ">
                                 <img
-                                    src={formatMediaUrl(previewUrl, "/assets/images/user.png")}
+                                    src={formatMediaUrl(previewUrl, "/assets/images/pf4.png")}
                                     alt="Profile Preview"
                                     className="w-25 h-25 object-cover rounded-full"
                                     onError={(e) => {
-                                        e.currentTarget.src = "/assets/images/user.png";
+                                        e.currentTarget.src = "/assets/images/pf4.png";
                                     }}
                                 />
                             </div>

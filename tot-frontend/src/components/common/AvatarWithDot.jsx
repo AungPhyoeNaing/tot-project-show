@@ -6,7 +6,7 @@ export default function AvatarWithDot({ user, onlineIds = new Set(), size = 40 }
   const isOnline = onlineIds.has(user?.id);
   const avatarSrc = formatMediaUrl(
     user?.avatar || user?.profile_picture,
-    '/assets/images/user.png',
+    '/assets/images/pf4.png',
   );
 
   return (
@@ -17,7 +17,7 @@ export default function AvatarWithDot({ user, onlineIds = new Set(), size = 40 }
         className="avatar-img object-cover"
         style={{ width: size, height: size }}
         onError={(e) => {
-          e.currentTarget.src = '/assets/images/user.png';
+          e.currentTarget.src = '/assets/images/pf4.png';
         }}
       />
       <span className={`status-dot ${isOnline ? 'on' : ''}`} />

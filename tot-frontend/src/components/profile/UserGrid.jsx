@@ -48,9 +48,9 @@ export default function UserGrid({
   };
 
   return (
-    <div className="user-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="user-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 p-1 w-full min-w-0">
       {validUsers.length === 0 ? (
-        <p className="no-users error-message cherry-bomb text-xl text-red-500">
+        <p className="no-users error-message cherry-bomb text-xl text-red-500 col-span-full text-center py-6">
           No users found
         </p>
       ) : (
@@ -63,37 +63,47 @@ export default function UserGrid({
           return (
             <div
               key={user.id}
-              className="user-card boxshadow1 py-4 px-6 sm:px-15 flex flex-col justify-center items-center w-full sm:w-fit rounded-xl"
+              className="user-card boxshadow2 p-3 sm:p-5 flex flex-col justify-between items-center w-full min-w-0 rounded-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group"
             >
               <div
-                className="user-avatar"
-                onClick={() => onViewProfile(user.id)}
+                className="user-avatar cursor-pointer mb-2 sm:mb-3 flex-shrink-0"
+                onClick={() => onViewProfile && onViewProfile(user.id)}
               >
                 <img
-                  className="w-20 h-20 sm:w-25 sm:h-25 rounded-xl object-cover"
+                  className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
                   src={formatMediaUrl(
                     user.avatar || user.profile_picture,
-                    "/assets/images/user.png",
+                    "/assets/images/pf4.png",
                   )}
-                  alt={user.name}
+                  alt={user.name || "User"}
                   onError={(e) => {
-                    e.currentTarget.src = "/assets/images/user.png";
+                    e.currentTarget.src = "/assets/images/pf4.png";
                   }}
                 />
               </div>
-              <div className="user-details flex flex-col justify-center items-center mb-2">
+              <div className="user-details flex flex-col justify-center items-center mb-2.5 sm:mb-3 w-full text-center min-w-0 px-1">
                 <h3
-                  className="roboto-serif-300 font-bold text-xl sm:text-3xl text-center"
-                  onClick={() => onViewProfile(user.id)}
+                  className="roboto-serif-300 font-bold text-sm sm:text-lg text-center cursor-pointer truncate max-w-full hover:text-blue-900 transition-colors"
+                  title={user.name || "Unknown User"}
+                  onClick={() => onViewProfile && onViewProfile(user.id)}
                 >
                   {user.name || "Unknown User"}
                 </h3>
-                <p className="text-sm">{user.email || "No email"}</p>
+                <p
+                  className="text-[11px] sm:text-sm text-gray-700/80 truncate max-w-full mt-0.5"
+                  title={user.email || ""}
+                >
+                  {user.email || "No email"}
+                </p>
               </div>
 
-              {showFollowButton && user.id !== currentUser.id && (
+              {showFollowButton && user.id !== currentUser?.id && (
                 <button
-                  className="boxshadow2 rounded-xl py-1 cursor-pointer w-full"
+                  className={`rounded-xl py-1 sm:py-1.5 px-2 sm:px-4 text-xs sm:text-sm font-semibold cursor-pointer w-full mt-auto transition-all duration-200 active:scale-95 ${
+                    isFollowing
+                      ? "boxshadow2 text-gray-800 hover:bg-red-500/20 hover:text-red-700"
+                      : "bg-[#5978A4] text-white hover:bg-[#486388] shadow-sm"
+                  }`}
                   onClick={() => handleFollowToggle(user.id, isFollowing)}
                 >
                   {isFollowing ? "Unfollow" : "Follow"}

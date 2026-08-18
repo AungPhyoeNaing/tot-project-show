@@ -131,12 +131,12 @@ const PostCardStatic = ({ post }) => {
             <img
               src={formatMediaUrl(
                 post.user?.avatar || post.user?.profile_picture,
-                "/assets/images/user.png",
+                "/assets/images/pf4.png",
               )}
               alt={`${post.user?.name || "User"}'s avatar`}
               className="user-avatar w-10 h-10 rounded-lg object-cover"
               onError={(e) => {
-                e.currentTarget.src = "/assets/images/user.png";
+                e.currentTarget.src = "/assets/images/pf4.png";
               }}
             />
           </div>
@@ -188,8 +188,15 @@ const PostCardStatic = ({ post }) => {
               <div className="flex items-center">
                 <img
                   className=" w-8 h-8 rounded-lg mr-3 object-cover"
-                  src={post.shared_post.user?.avatar || "assets/images/pf4.png"}
-                  alt={`${post.shared_post.user?.name} avatar`}
+                  src={formatMediaUrl(
+                    post.shared_post.user?.avatar ||
+                      post.shared_post.user?.profile_picture,
+                    "/assets/images/pf4.png",
+                  )}
+                  alt={`${post.shared_post.user?.name || "User"} avatar`}
+                  onError={(e) => {
+                    e.currentTarget.src = "/assets/images/pf4.png";
+                  }}
                 />
                 <strong style={{ fontSize: "16px" }}>
                   {post.shared_post.user?.name}

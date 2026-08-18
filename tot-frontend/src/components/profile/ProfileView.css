@@ -1,14 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap");
 @import "tailwindcss";
 
-.roboto-serif-<uniquifier > {
+.roboto-serif-300 {
   font-family: "Roboto Serif", serif;
   font-optical-sizing: auto;
-  font-weight: <weight>;
+  font-weight: 300;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100,
-    "GRAD" 0;
+}
+
+.roboto-serif-800 {
+  font-family: "Roboto Serif", serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .boxshadow2 {

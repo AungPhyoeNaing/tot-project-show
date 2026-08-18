@@ -8,14 +8,29 @@
   font-style: normal;
 }
 
-.roboto-serif-<uniquifier > {
+.roboto-serif-800 {
   font-family: "Roboto Serif", serif;
   font-optical-sizing: auto;
-  font-weight: <weight>;
+  font-weight: 800;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100,
-    "GRAD" 0;
+}
+
+/* Sleek scrollbar for Trendmates user list */
+.user-list::-webkit-scrollbar,
+.users-grid::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb,
+.users-grid::-webkit-scrollbar-thumb {
+  background: rgba(89, 120, 164, 0.3);
+  border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb:hover,
+.users-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(89, 120, 164, 0.6);
 }
 
 .textxxs {
@@ -36,16 +51,7 @@
   }
 }
 
-.status {
-  position: absolute;
-  width: fit-content;
-  padding: 1px 6px;
-  color: white;
-  font-size: 12px;
-  border-radius: 5px;
-  bottom: 1px;
-  right: -16px;
-}
+
 
 .boxshadow2 {
   background: rgba(255, 255, 255, 0.2);

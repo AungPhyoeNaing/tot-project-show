@@ -44,7 +44,7 @@ export default function ProfileView({
   };
 
   return (
-    <div className="profile-container w-full lg:overflow-y-auto lg:no-scrollbar rounded-3xl lg:h-[552px] lg:mr-4 my-4 bg-[#5978A433] font-balthazar overflow-visible lg:overflow-hidden p-4 sm:p-7">
+    <div className="profile-container w-full lg:overflow-y-auto lg:no-scrollbar rounded-3xl lg:h-[calc(100vh-35px)] lg:mr-4 my-2 lg:my-4 bg-[#5978A433] font-balthazar p-4 sm:p-7">
       {/* Profile Header Section */}
       <div className="profile-header outline-1 outline-cyan-50/80 rounded-3xl px-4 sm:px-7 py-4 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-10 bg-white/10 shadow-lg">
         {/* Profile Avatar/Image */}
@@ -54,11 +54,11 @@ export default function ProfileView({
             // Use the profileUser's avatar field (returned by backend), fallback to placeholder if not available
             src={formatMediaUrl(
               profileUser.avatar || profileUser.profile_picture,
-              "/assets/images/user.png",
+              "/assets/images/pf4.png",
             )}
             alt={`${profileUser.name || "User"}'s avatar`}
             onError={(e) => {
-              e.currentTarget.src = "/assets/images/user.png";
+              e.currentTarget.src = "/assets/images/pf4.png";
             }}
           />
         </div>

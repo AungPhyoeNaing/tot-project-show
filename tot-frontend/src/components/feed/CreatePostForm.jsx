@@ -184,12 +184,12 @@ export default function CreatePostForm({
             <img
               src={formatMediaUrl(
                 currentUser?.avatar || currentUser?.profile_picture,
-                "/assets/images/user.png",
+                "/assets/images/pf4.png",
               )}
               alt={`${currentUser?.name || "User"}'s avatar`}
               className="post-author-avatar rounded-2xl w-10 h-10 sm:w-12 sm:h-12 object-cover"
               onError={(e) => {
-                e.currentTarget.src = "/assets/images/user.png";
+                e.currentTarget.src = "/assets/images/pf4.png";
               }}
             />
           </div>

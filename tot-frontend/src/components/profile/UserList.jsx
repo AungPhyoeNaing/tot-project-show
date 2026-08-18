@@ -36,45 +36,90 @@ export default function UserList({
   }
 
   return (
-    <section className="order-1 lg:order-3 lg:flex-1 lg:mr-4 min-w-0 top-0 z-20 lg:static">
-      <div className="user-list font-balthazar bg-gray-400/30 backdrop-blur-md no-scrollbar lg:backdrop-blur-none outline-cyan-50 outline-1 rounded-2xl w-full pt-2 lg:bg-gray-400/10 lg:rounded-3xl lg:my-4 lg:p-3 lg:overflow-y-auto  lg:h-[calc(100vh-35px)] lg:overflow-hidden">
-        <div className="hidden items-center gap-2 p-1 lg:flex lg:flex-col lg:gap-0 lg:my-1 lg:p-3">
-          <img className="w-5 lg:w-7" src="/assets/images/friends.png" alt="" />
-          <p className="text-lg text-blue-900 lg:text-2xl">Trendmates</p>
+    <section className="order-1 lg:order-3 lg:flex-1 lg:mr-4 min-w-0 w-full top-0 z-20 lg:static">
+      <div className="user-list font-balthazar bg-gray-400/30 backdrop-blur-md no-scrollbar outline-cyan-50 outline-1 rounded-2xl w-full p-2.5 lg:bg-gray-400/10 lg:rounded-3xl lg:my-4 lg:p-3 lg:overflow-y-auto lg:h-[calc(100vh-35px)] flex flex-col">
+        {/* Mobile Header Label */}
+        <div className="flex items-center justify-between px-1 pb-1.5 lg:hidden flex-shrink-0">
+          <div className="flex items-center gap-1.5">
+            <img className="w-4 h-4 object-contain" src="/assets/images/friends.png" alt="" />
+            <span className="text-sm font-bold text-blue-900 leading-none">Trendmates</span>
+          </div>
+          <span className="text-[11px] text-blue-900/70 font-medium">
+            {validUsers.filter((u) => u && u.id !== currentUser?.id).length} users
+          </span>
         </div>
-        <ul className="users-grid flex items-center gap-3 overflow-x-auto no-scrollbar py-1 px-1 lg:block lg:overflow-visible lg:py-0 lg:px-0">
+
+        {/* Desktop Header Label */}
+        <div className="hidden items-center gap-2 p-1 lg:flex lg:flex-col lg:gap-0 lg:my-1 lg:p-2 flex-shrink-0">
+          <img className="w-5 lg:w-7" src="/assets/images/friends.png" alt="" />
+          <p className="text-lg text-blue-900 lg:text-2xl font-bold">Trendmates</p>
+        </div>
+
+        <ul className="users-grid flex items-center gap-3.5 overflow-x-auto no-scrollbar py-1 px-1 lg:flex lg:flex-col lg:gap-1.5 lg:overflow-y-auto lg:overflow-x-hidden lg:py-0 lg:px-0 flex-1 w-full">
           {validUsers
-            .filter((user) => user.id !== currentUser.id)
+            .filter((user) => user && user.id !== currentUser?.id)
             .map((user) => {
               // Determine online status using the helper function and the passed state
               const online = isUserOnline(user.id);
               return (
                 <li
                   key={user.id}
-                  className="user-card flex flex-col items-center w-16 flex-shrink-0 mb-0 lg:block lg:mb-4 lg:w-auto"
+                  className="user-card flex-shrink-0 w-[68px] sm:w-[76px] lg:w-full mb-0 lg:mb-1"
                 >
-                  <div className="flex items-center justify-between gap-1 w-full">
+                  {/* Mobile View: Story-style Bubble (avoids any horizontal text clipping/overlap) */}
+                  <div className="flex flex-col items-center w-full lg:hidden group">
                     <button
-                      className="profile-link flex flex-col items-center gap-1 text-xs cursor-pointer pb-0 border-b-0 lg:pb-2 lg:flex-row lg:items-center lg:gap-2 lg:text-sm lg:border-b-1 lg:border-b-blue-300 flex-1 min-w-0"
-                      onClick={() => onViewProfile(user.id)}
+                      onClick={() => onViewProfile && onViewProfile(user.id)}
+                      className="relative cursor-pointer flex flex-col items-center w-full focus:outline-none bg-transparent border-0 p-0"
+                      aria-label={`View profile of ${user.name}`}
+                    >
+                      <div className="relative w-12 h-12 rounded-2xl p-0.5 ring-2 ring-white/60 shadow-xs bg-white/20 transition-transform group-hover:scale-105 active:scale-95 flex items-center justify-center flex-shrink-0">
+                        <img
+                          src={formatMediaUrl(
+                            user.avatar || user.profile_picture,
+                            "/assets/images/pf4.png",
+                          )}
+                          alt={user.name}
+                          className="w-full h-full rounded-[14px] object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/assets/images/pf4.png";
+                          }}
+                        />
+                        {/* Status indicator dot */}
+                        <span
+                          className={`absolute -bottom-0.5 -right-0.5 block w-3 h-3 rounded-full border-2 border-white shadow-xs ${
+                            online ? "bg-emerald-500" : "bg-gray-400"
+                          }`}
+                          title={online ? "Online" : "Offline"}
+                        />
+                      </div>
+                      <strong className="roboto-serif-800 font-semibold text-[11px] text-blue-950 truncate max-w-full w-full text-center mt-1.5 leading-tight group-hover:text-blue-700 transition-colors">
+                        {user.name}
+                      </strong>
+                    </button>
+                  </div>
+
+                  {/* Desktop View: Sidebar Row with Profile Link + Chat Button */}
+                  <div className="hidden lg:flex items-center justify-between gap-2 w-full p-1.5 rounded-xl hover:bg-white/15 transition-colors">
+                    <button
+                      className="profile-link flex items-center gap-2 text-sm flex-1 min-w-0 text-left cursor-pointer bg-transparent border-0 p-0"
+                      onClick={() => onViewProfile && onViewProfile(user.id)}
                       aria-label={`View profile of ${user.name}`}
                     >
                       <div className="user-avatar-container relative flex-shrink-0">
                         <img
                           src={formatMediaUrl(
                             user.avatar || user.profile_picture,
-                            "/assets/images/user.png",
+                            "/assets/images/pf4.png",
                           )}
                           alt={`${user.name}'s avatar`}
-                          className="user-avatar w-7 h-7 min-w-7 min-h-7 max-w-7 max-h-7 bg-gray-300 rounded-xl object-cover lg:w-11 lg:h-11 lg:min-w-11 lg:min-h-11 lg:max-w-11 lg:max-h-11"
+                          className="user-avatar w-10 h-10 min-w-10 min-h-10 max-w-10 max-h-10 bg-gray-300 rounded-xl object-cover shadow-xs"
                           onError={(e) => {
-                            e.currentTarget.src = "/assets/images/user.png";
+                            e.currentTarget.src = "/assets/images/pf4.png";
                           }}
                         />
                         {/* Apply the dynamically determined online status */}
-                        <div
-                          className={`online-status absolute -bottom-1 -right-1 lg:bottom-0 lg:-right-1`}
-                        >
+                        <div className="online-status absolute -bottom-0.5 -right-0.5">
                           <span
                             className={`status-text block w-2.5 h-2.5 rounded-full border border-white shadow-xs ${
                               online
@@ -86,11 +131,11 @@ export default function UserList({
                         </div>
                       </div>
 
-                      <div className="user-info flex flex-col min-w-0 text-left">
-                        <strong className="roboto-serif-800 font-bold truncate max-w-14 lg:max-w-none lg:whitespace-normal lg:overflow-visible cursor-pointer wrap-break-word">
+                      <div className="user-info flex flex-col min-w-0 text-left flex-1">
+                        <strong className="roboto-serif-800 font-bold text-sm text-blue-950 truncate cursor-pointer hover:text-blue-700 transition-colors">
                           {user.name}
                         </strong>
-                        <span className="text-[10px] text-gray-600 hidden lg:block">
+                        <span className="text-[10px] text-gray-600 leading-tight">
                           {online ? "Online" : "Offline"}
                         </span>
                       </div>
@@ -102,7 +147,7 @@ export default function UserList({
                           e.stopPropagation();
                           onChat(user);
                         }}
-                        className="hidden lg:flex p-1.5 rounded-xl hover:bg-white/50 text-blue-900 transition-colors cursor-pointer flex-shrink-0"
+                        className="hidden lg:flex p-1.5 rounded-lg hover:bg-white/50 text-blue-900 transition-colors cursor-pointer flex-shrink-0"
                         title={`Chat with ${user.name}`}
                         aria-label={`Chat with ${user.name}`}
                       >
