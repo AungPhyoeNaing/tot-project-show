@@ -74,8 +74,9 @@ const Feed = ({
       <div className="feed lg:overflow-y-auto no-scrollbar lg:h-[calc(100vh-35px)] outline-cyan-50 outline-1 rounded-3xl  w-full mx-auto my-4 bg-gray-400/10 font-balthazar lg:overflow-hidden">
         <div className="border-b border-b-cyan-50 py-2 px-4 sm:px-8">
           <header>
-            <h3 className="text-center text-xl sm:text-2xl text-blue-900 font-black mt-3 sm:mt-4">
-              Hello, {user?.name}! Ready to explore?
+            <h3 className="text-center text-xl sm:text-2xl text-blue-500 font-black mt-3 sm:mt-4">
+              Hello, <span className="text-blue-900">{user?.name}</span>! Ready
+              to explore?
             </h3>
           </header>
           <CreatePostForm
@@ -91,9 +92,9 @@ const Feed = ({
             <button
               key={cat.id}
               onClick={() => toggleCat(cat.id)}
-              className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full border text-xs sm:text-sm font-semibold transition-all duration-300 backdrop-blur-md shadow-lg ${
+              className={`boxshadow px-2 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 backdrop-blur-md shadow-lg ${
                 selectedCats.includes(cat.id)
-                  ? "bg-[#ffbdfc] text-[#9c1f95] border-[#9c1f95] shadow-[0_4px_12px_rgba(59,130,246,0.5)] scale-105"
+                  ? " text-blue-800  scale-105"
                   : "bg-white/40 text-gray-800 border-white/50 hover:bg-white/60 hover:scale-105"
               }`}
             >
@@ -101,7 +102,7 @@ const Feed = ({
             </button>
           ))}
         </div>
-        <div className="posts-grid p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="posts-grid p-3 sm:p-4 columns-1 sm:columns-2 gap-4">
           {filtered.length ? (
             filtered.map((post) => (
               <Post

@@ -61,9 +61,9 @@ export default function UserList({
                   >
                     <div className="user-avatar-container relative">
                       <img
-                        src={user.avatar || "assets/images/users.png"}
+                        src={user.avatar || "assets/images/pf4.png"}
                         alt={`${user.name}'s avatar`}
-                        className="user-avatar w-7 h-7 min-w-7 min-h-7 max-w-7 max-h-7 bg-gray-300  p-1  rounded-xl object-cover lg:w-12 lg:h-12 lg:min-w-12 lg:min-h-12 lg:max-w-12 lg:max-h-12"
+                        className="user-avatar w-7 h-7 min-w-7 min-h-7 max-w-7 max-h-7 bg-gray-300 rounded-xl object-cover lg:w-12 lg:h-12 lg:min-w-12 lg:min-h-12 lg:max-w-12 lg:max-h-12"
                       />
                       {/* Apply the dynamically determined online status */}
                       <div
@@ -72,7 +72,7 @@ export default function UserList({
                         }`}
                       >
                         <span
-                          className={`status-text w-3 h-3 rounded-full overflow-hidden lg:w-auto lg:h-auto lg:px-2 lg:py-1 lg:rounded-md lg:overflow-visible ${
+                          className={`status-text text-xs w-3 h-3 rounded-full overflow-hidden lg:w-auto lg:h-auto lg:px-1 lg:py-0.5 lg:rounded-md lg:overflow-visible ${
                             online
                               ? "bg-green-500/78 text-white"
                               : "bg-gray-400/78 text-white"
@@ -84,7 +84,7 @@ export default function UserList({
                     </div>
 
                     <div className="user-info flex flex-col">
-                      <strong className="chicle-regular truncate max-w-14 lg:max-w-none lg:whitespace-normal lg:overflow-visible cursor-pointer wrap-break-word">
+                      <strong className="roboto-serif-800 font-bold truncate max-w-14 lg:max-w-none lg:whitespace-normal lg:overflow-visible cursor-pointer wrap-break-word">
                         {user.name}
                       </strong>
                     </div>

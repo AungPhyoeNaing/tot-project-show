@@ -1,199 +1,210 @@
 @import url("https://fonts.googleapis.com/css2?family=Balthazar&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap");
 @import "tailwindcss";
 
 .font-balthazar {
-    font-family: "Balthazar", serif;
-    font-weight: 200;
-    font-style: normal;
+  font-family: "Balthazar", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.roboto-serif-<uniquifier > {
+  font-family: "Roboto Serif", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100,
+    "GRAD" 0;
 }
 
 .chicle-regular {
-    font-family: "Chicle", serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Chicle", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .cherry-bomb {
-    font-family: "Cherry Bomb One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Cherry Bomb One", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 @keyframes appear {
-    from {
-        opacity: 0;
-        scale: 0.8;
-    }
-    to {
-        opacity: 1;
-        scale: 1;
-    }
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }
 
 .post-card {
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0%;
+  animation: appear linear;
+  animation-timeline: view();
+  animation-range: entry 0%;
 }
 
 .comShareAni:hover {
-    background-color: #8ec5ff;
-    padding: 0.5rem;
-    border-radius: 100%;
-    outline: 1px solid #193cb8;
-    transition: all 0.3s ease-in-out;
+  background-color: #8ec5ff;
+  padding: 0.5rem;
+  border-radius: 100%;
+  outline: 1px solid #193cb8;
+  transition: all 0.3s ease-in-out;
 }
 
 .react {
-    background-size: cover;
-    background-position: center;
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
 }
 
 .jello-vertical:hover {
-    -webkit-animation: jello-vertical 0.9s both;
-    animation: jello-vertical 0.9s both;
+  -webkit-animation: jello-vertical 0.9s both;
+  animation: jello-vertical 0.9s both;
 }
 
 @-webkit-keyframes jello-vertical {
-    0% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
-    30% {
-        -webkit-transform: scale3d(0.75, 1.25, 1);
-        transform: scale3d(0.75, 1.25, 1);
-    }
-    40% {
-        -webkit-transform: scale3d(1.25, 0.75, 1);
-        transform: scale3d(1.25, 0.75, 1);
-    }
-    50% {
-        -webkit-transform: scale3d(0.85, 1.15, 1);
-        transform: scale3d(0.85, 1.15, 1);
-    }
-    65% {
-        -webkit-transform: scale3d(1.05, 0.95, 1);
-        transform: scale3d(1.05, 0.95, 1);
-    }
-    75% {
-        -webkit-transform: scale3d(0.95, 1.05, 1);
-        transform: scale3d(0.95, 1.05, 1);
-    }
-    100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(0.85, 1.15, 1);
+    transform: scale3d(0.85, 1.15, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
 }
 @keyframes jello-vertical {
-    0% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
-    30% {
-        -webkit-transform: scale3d(0.75, 1.25, 1);
-        transform: scale3d(0.75, 1.25, 1);
-    }
-    40% {
-        -webkit-transform: scale3d(1.25, 0.75, 1);
-        transform: scale3d(1.25, 0.75, 1);
-    }
-    50% {
-        -webkit-transform: scale3d(0.85, 1.15, 1);
-        transform: scale3d(0.85, 1.15, 1);
-    }
-    65% {
-        -webkit-transform: scale3d(1.05, 0.95, 1);
-        transform: scale3d(1.05, 0.95, 1);
-    }
-    75% {
-        -webkit-transform: scale3d(0.95, 1.05, 1);
-        transform: scale3d(0.95, 1.05, 1);
-    }
-    100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(0.85, 1.15, 1);
+    transform: scale3d(0.85, 1.15, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
 }
 
 .feed {
-    /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+  /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
         rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
 
-    box-shadow: inset 0px 9px 6px 10px #00000024;
+  box-shadow: inset 0px 9px 6px 10px #00000024;
 }
 
 .shake:hover {
-    -webkit-animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955)
-        both;
-    animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  -webkit-animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
+  animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
 }
 
 @-webkit-keyframes shake-bottom {
-    0%,
-    100% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transform-origin: 50% 100%;
-        transform-origin: 50% 100%;
-    }
-    10% {
-        -webkit-transform: rotate(2deg);
-        transform: rotate(2deg);
-    }
-    20%,
-    40%,
-    60% {
-        -webkit-transform: rotate(-4deg);
-        transform: rotate(-4deg);
-    }
-    30%,
-    50%,
-    70% {
-        -webkit-transform: rotate(4deg);
-        transform: rotate(4deg);
-    }
-    80% {
-        -webkit-transform: rotate(-2deg);
-        transform: rotate(-2deg);
-    }
-    90% {
-        -webkit-transform: rotate(2deg);
-        transform: rotate(2deg);
-    }
+  0%,
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+  10% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: rotate(-4deg);
+    transform: rotate(-4deg);
+  }
+  30%,
+  50%,
+  70% {
+    -webkit-transform: rotate(4deg);
+    transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+  }
+  90% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+  }
 }
 @keyframes shake-bottom {
-    0%,
-    100% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transform-origin: 50% 100%;
-        transform-origin: 50% 100%;
-    }
-    10% {
-        -webkit-transform: rotate(2deg);
-        transform: rotate(2deg);
-    }
-    20%,
-    40%,
-    60% {
-        -webkit-transform: rotate(-4deg);
-        transform: rotate(-4deg);
-    }
-    30%,
-    50%,
-    70% {
-        -webkit-transform: rotate(4deg);
-        transform: rotate(4deg);
-    }
-    80% {
-        -webkit-transform: rotate(-2deg);
-        transform: rotate(-2deg);
-    }
-    90% {
-        -webkit-transform: rotate(2deg);
-        transform: rotate(2deg);
-    }
+  0%,
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+  10% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: rotate(-4deg);
+    transform: rotate(-4deg);
+  }
+  30%,
+  50%,
+  70% {
+    -webkit-transform: rotate(4deg);
+    transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+  }
+  90% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+  }
 }

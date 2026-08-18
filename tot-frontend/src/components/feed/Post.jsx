@@ -358,7 +358,7 @@ const Post = ({
 
   // --- Render Return ---
   return (
-    <article className="post-card boxshadow w-full h-fit px-4 sm:px-7 pt-5 pb-8 rounded-3xl shadow-lg relative">
+    <article className="post-card boxshadow w-full h-fit px-4 sm:px-7 pt-5 pb-8 rounded-3xl shadow-lg relative break-inside-avoid mb-4">
       {error && (
         <div className="post-error error-message text-red-500 cherry-bomb text-xl absolute left-10 top-5">
           {error}
@@ -375,16 +375,16 @@ const Post = ({
             src={
               post.user?.avatar ||
               post.user?.profile_picture ||
-              "assets/images/users.png"
+              "assets/images/pf4.png"
             } // Use avatar or profile_picture, fallback to placeholder
             alt={`${post.user?.name || "User"}'s avatar`}
-            className="post-author-avatar rounded-2xl w-12 h-12 object-cover"
+            className="post-author-avatar rounded-2xl w-13 h-13 object-cover"
           />
         </div>
 
         <div className="flex justify-between items-start w-full">
           <div className="flex flex-col ">
-            <strong className="chicle-regular font-bold text-xl sm:text-2xl ">
+            <strong className="roboto-serif-300 font-bold text-xl sm:text-2xl ">
               {post.user?.name || "Unknown User"}
             </strong>
             <small className="post-time">
@@ -442,7 +442,7 @@ const Post = ({
               <img
                 src={post.media_url} /* max-h-60 */
                 alt="Post media"
-                className="w-full rounded-lg object-fit max-h-60"
+                className="w-full rounded-lg object-contain max-h-60"
               />
             )}
 
@@ -497,7 +497,7 @@ const Post = ({
                   src={
                     post.shared_post.user?.avatar ||
                     post.shared_post.user?.profile_picture ||
-                    "assets/images/users.png"
+                    "assets/images/pf4.png"
                   } // Avatar for shared post author
                   alt={`${post.shared_post.user?.name || "User"} avatar`}
                   className="shared-post-author-avatar w-8 h-8 rounded-xl mr-2 object-cover" // Different class for sizing if needed

@@ -202,7 +202,7 @@ const Chat = ({
             <img
               className="w-12 h-12 rounded-xl "
               // Use the profileUser's avatar field (returned by backend), fallback to placeholder if not available
-              src={otherUserId.avatar || "assets/images/user.png"} // Changed this line to use 'avatar'
+              src={otherUserId.avatar || "assets/images/pf4.png"} // Changed this line to use 'avatar'
               alt={`${otherUserId.name || "User"}'s avatar`}
             />
             {/* --- DISPLAY ONLINE STATUS --- */}
