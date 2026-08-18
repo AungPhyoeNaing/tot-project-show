@@ -76,6 +76,7 @@
   scale: 0;
   z-index: 99;
   cursor: pointer;
+  background-color: white;
 }
 
 .menu.active li {
@@ -98,7 +99,9 @@
 
 /* Selected category in the header menu */
 .menu li:has(input:checked) {
-  box-shadow: 0 0 0 3px var(--clr), 0 6px 24px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 0 3px var(--clr),
+    0 6px 24px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.65);
 }
 

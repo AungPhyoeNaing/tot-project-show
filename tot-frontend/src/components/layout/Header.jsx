@@ -129,7 +129,7 @@ export default function Header({
 
             <div className={`menu ${active ? "active" : ""}`}>
               <li
-                style={{ "--i": 0, "--clr": "#1877f2" }}
+                style={{ "--i": 0, "--clr": "#0a66c2" }}
                 title="Announcements"
                 className="boxshadow"
                 onClick={() => toggleCat("announcement")}
@@ -144,7 +144,7 @@ export default function Header({
                 <img src="assets/images/announce.png" alt="Announcements" />
               </li>
               <li
-                style={{ "--i": 1, "--clr": "#25d366" }}
+                style={{ "--i": 1, "--clr": "#0a66c2" }}
                 title="Study"
                 className="boxshadow"
                 onClick={() => toggleCat("study")}
@@ -159,7 +159,7 @@ export default function Header({
                 <img src="assets/images/study.png" alt="Study" />
               </li>
               <li
-                style={{ "--i": 2, "--clr": "#1b1e21" }}
+                style={{ "--i": 2, "--clr": "#0a66c2" }}
                 title="Entertainment"
                 className="boxshadow"
                 onClick={() => toggleCat("entertainment")}
@@ -174,7 +174,7 @@ export default function Header({
                 <img src="assets/images/tv.png" alt="Entertainment" />
               </li>
               <li
-                style={{ "--i": 3, "--clr": "#ff5733" }}
+                style={{ "--i": 3, "--clr": "#0a66c2" }}
                 title="Memes"
                 className="boxshadow"
                 onClick={() => toggleCat("memes")}

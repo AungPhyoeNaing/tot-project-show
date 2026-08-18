@@ -63,12 +63,12 @@ export default function UserList({
                         <img
                           src={formatMediaUrl(
                             user.avatar || user.profile_picture,
-                            "/assets/images/users.png",
+                            "/assets/images/user.png",
                           )}
                           alt={`${user.name}'s avatar`}
-                          className="user-avatar w-7 h-7 min-w-7 min-h-7 max-w-7 max-h-7 bg-gray-300 p-1 rounded-xl object-cover lg:w-11 lg:h-11 lg:min-w-11 lg:min-h-11 lg:max-w-11 lg:max-h-11"
+                          className="user-avatar w-7 h-7 min-w-7 min-h-7 max-w-7 max-h-7 bg-gray-300 rounded-xl object-cover lg:w-11 lg:h-11 lg:min-w-11 lg:min-h-11 lg:max-w-11 lg:max-h-11"
                           onError={(e) => {
-                            e.currentTarget.src = "/assets/images/users.png";
+                            e.currentTarget.src = "/assets/images/user.png";
                           }}
                         />
                         {/* Apply the dynamically determined online status */}
@@ -87,7 +87,7 @@ export default function UserList({
                       </div>
 
                       <div className="user-info flex flex-col min-w-0 text-left">
-                        <strong className="chicle-regular text-sm lg:text-base text-blue-950 truncate max-w-14 lg:max-w-none cursor-pointer">
+                        <strong className="roboto-serif-800 font-bold truncate max-w-14 lg:max-w-none lg:whitespace-normal lg:overflow-visible cursor-pointer wrap-break-word">
                           {user.name}
                         </strong>
                         <span className="text-[10px] text-gray-600 hidden lg:block">
