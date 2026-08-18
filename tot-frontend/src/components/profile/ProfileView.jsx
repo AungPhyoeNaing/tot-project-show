@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import UserGrid from "./UserGrid.jsx";
 import PostCardStatic from "../feed/PostCardStatic.jsx";
+import { formatMediaUrl } from "../../utils/mediaUrl";
 import "./ProfileView.css";
 
 export default function ProfileView({
@@ -51,8 +52,14 @@ export default function ProfileView({
                     <img
                         className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover"
                         // Use the profileUser's avatar field (returned by backend), fallback to placeholder if not available
-                        src={profileUser.avatar || "assets/images/user.png"} // Changed this line to use 'avatar'
+                        src={formatMediaUrl(
+                            profileUser.avatar || profileUser.profile_picture,
+                            "/assets/images/user.png",
+                        )}
                         alt={`${profileUser.name || "User"}'s avatar`}
+                        onError={(e) => {
+                            e.currentTarget.src = "/assets/images/user.png";
+                        }}
                     />
                 </div>
 

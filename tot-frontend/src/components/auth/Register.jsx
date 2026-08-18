@@ -56,8 +56,8 @@ export default function Register({ onRegister, onSwitchToLogin }) {
       </div>
       <section className="auth-section absolute top-30 inset-4 lg:static">
         <div className="loginContainer outline-cyan-50 outline-1 rounded-3xl w-full mb-3 mx-auto px-5 sm:px-9 py-3  backdrop-blur-xl bg-white/20 shadow-xl">
-          <span className="logoContainer w-18 h-18 rounded-full  flex items-center justify-center font-bold mx-auto">
-            <img className="object-cover rounded-full" src="tot.jpg" alt="" />
+          <span className="logoContainer w-18 h-18 rounded-full flex items-center justify-center font-bold mx-auto">
+            <img className="object-cover rounded-full shadow-md" src="/tot.jpg" alt="Trends of TUM Logo" />
           </span>
           <h2 className=" text-center text-3xl sm:text-4xl mb-1 cherry-bom text-transparent bg-[rgb(57,78,106)]/60 bg-clip-text [text-shadow:_0px_3px_2px_rgb(89_120_164_/_0.5)]">
             Welcome:D

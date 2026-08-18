@@ -14,8 +14,6 @@
     2px 4px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    border-right: 1px solid rgba(255, 255, 255, 0.18); */
   border-top: 2px solid rgba(89, 120, 164, 0.3);
   border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
@@ -27,8 +25,6 @@
     2px 4px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /* border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    border-right: 1px solid rgba(255, 255, 255, 0.18); */
   border-top: 2px solid rgba(89, 120, 164, 0.3);
   border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
@@ -38,8 +34,6 @@
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /* border-bottom: 1px solid rgba(89, 120, 164, 0.3);
-    border-right: 1px solid rgba(89, 120, 164, 0.3); */
   border-top: 2px solid rgba(89, 120, 164, 0.3);
   border-left: 3px solid rgba(89, 120, 164, 0.3);
 }
@@ -74,7 +68,7 @@
 
 /* Style for individual message bubbles */
 .message-bubble {
-  max-width: 65%;
+  max-width: 75%;
   padding: 10px 15px;
   margin-bottom: 5px;
   border-radius: 18px;
@@ -93,8 +87,7 @@
 /* Incoming messages (from others) */
 .message-incoming {
   align-self: flex-start;
-  background-color: var(--bubble-incoming);
-  color: var(--text-incoming);
+  color: #000000;
   border-bottom-left-radius: 6px;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
@@ -104,13 +97,11 @@
 /* Outgoing messages (from current user) */
 .message-outgoing {
   align-self: flex-end;
-  background: var(--bubble-outgoing);
-  color: var(--text-outgoing);
+  color: #000000;
   border-bottom-right-radius: 6px;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   border-bottom-left-radius: 18px;
-  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.3);
 }
 
 /* Timestamp styling */
@@ -122,3 +113,5 @@
   text-align: right;
   font-weight: 500;
 }
+
+

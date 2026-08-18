@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatMediaUrl } from "../../utils/mediaUrl";
 
 export default function UserGrid({
     users,
@@ -69,11 +70,15 @@ export default function UserGrid({
                                 onClick={() => onViewProfile(user.id)}
                             >
                                 <img
-                                    className="w-20 h-20 sm:w-25 sm:h-25 rounded-xl"
-                                    src={
-                                        user.avatar || "assets/images/user.png"
-                                    }
+                                    className="w-20 h-20 sm:w-25 sm:h-25 rounded-xl object-cover"
+                                    src={formatMediaUrl(
+                                        user.avatar || user.profile_picture,
+                                        "/assets/images/user.png",
+                                    )}
                                     alt={user.name}
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/assets/images/user.png";
+                                    }}
                                 />
                             </div>
                             <div className="user-details flex flex-col justify-center items-center mb-2">

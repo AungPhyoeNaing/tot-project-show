@@ -393,8 +393,16 @@ export default function App() {
 
                 setUser(userResponse.data);
 
-                // 2. Establish Socket.IO connection
-                newSocketInstance = io("http://localhost:3001", {
+                const isTotDomain =
+                    window.location.hostname === "totumdy.com" ||
+                    window.location.hostname?.endsWith(".totumdy.com");
+                const socketUrl =
+                    import.meta.env.VITE_SOCKET_URL ||
+                    (isTotDomain
+                        ? `${window.location.protocol || "https:"}//chat.totumdy.com`
+                        : `http://${window.location.hostname || "localhost"}:3001`);
+
+                newSocketInstance = io(socketUrl, {
                     auth: {
                         token: token, // Pass Sanctum token for authentication
                     },
@@ -747,13 +755,44 @@ export default function App() {
                                     currentUserId={user.id}
                                     otherUserId={chatWithUser?.id}
                                     otherUserName={chatWithUser?.name}
+                                    otherUserAvatar={chatWithUser?.avatar}
                                     onViewProfile={viewProfile}
                                     onlineUsers={onlineUsers}
                                     isOtherUserOnline={onlineUsers?.has(
                                         chatWithUser.id
                                     )}
                                     socket={socket}
+                                    onBackToUserList={() => setChatWithUser(null)}
                                 />
+                                <div className="hidden lg:block lg:flex-1 lg:h-[calc(100vh-35px)] min-w-0">
+                                    <UserList
+                                        users={usersList}
+                                        currentUser={user}
+                                        onFollow={handleFollow}
+                                        onUnfollow={handleUnfollow}
+                                        onViewProfile={viewProfile}
+                                        onChat={initiateChat}
+                                        onReportUser={handleSwitchToReportUser}
+                                        onlineUsers={onlineUsers}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <section className="order-2 lg:flex-8 lg:h-[calc(100vh-35px)] min-w-0 my-2 lg:my-4 flex flex-col items-center justify-center w-full">
+                                    <div className="w-full min-h-[calc(100vh-120px)] sm:min-h-0 sm:w-fit mx-auto my-auto rounded-2xl text-teamcolor bg-[#5978A433]/30 bg-blur-2xl cherry-bomb text-xl overflow-hidden p-10 flex flex-col items-center justify-center">
+                                        <h3>You have no recent chats.</h3>
+                                        <p className="mb-3">
+                                            Connect with trendmates to have some fun!
+                                        </p>
+                                        <button
+                                            onClick={() => setCurrentView("feed")}
+                                            className="py-2 px-6 boxshadow2 rounded-xl cursor-pointer"
+                                        >
+                                            Back
+                                        </button>
+                                    </div>
+                                </section>
                                 <UserList
                                     users={usersList}
                                     currentUser={user}
@@ -761,25 +800,10 @@ export default function App() {
                                     onUnfollow={handleUnfollow}
                                     onViewProfile={viewProfile}
                                     onChat={initiateChat}
-                                    onReportUser={handleSwitchToReportUser} // Pass the handler to UserList component
-                                    // --- PASS THE NEW STATE ---
+                                    onReportUser={handleSwitchToReportUser}
                                     onlineUsers={onlineUsers}
-                                    // --- END PASS ---
                                 />
                             </>
-                        ) : (
-                            <div className="w-full min-h-[calc(100vh-120px)] sm:min-h-0 sm:w-fit mx-auto my-auto rounded-2xl text-teamcolor bg-[#5978A433]/30 bg-blur-2xl cherry-bomb text-xl overflow-hidden p-10 flex flex-col items-center justify-center">
-                                <h3>You have no recent chats.</h3>
-                                <p className="mb-3">
-                                    Connect with trendmates to have some fun!
-                                </p>
-                                <button
-                                    onClick={() => setCurrentView("feed")}
-                                    className="py-2 px-6 boxshadow2 rounded-xl cursor-pointer"
-                                >
-                                    Back
-                                </button>
-                            </div>
                         )
                     ) : null
                 ) : (

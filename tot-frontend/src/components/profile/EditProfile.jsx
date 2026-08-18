@@ -1,14 +1,17 @@
 // src/components/EditProfile.jsx
 import React, { useState } from "react";
+import { formatMediaUrl } from "../../utils/mediaUrl";
 import "./EditProfile.css"; // Optional: Import CSS for styling
 
 const EditProfile = ({ user, onUpdateProfile, onGoToMyProfile }) => {
     // Receive user data and update function
     const [formData, setFormData] = useState({
-        username: user.name || "", // Use 'name' from user object
+        username: user?.name || "", // Use 'name' from user object
         profilePicture: null, // For the new image file
     });
-    const [previewUrl, setPreviewUrl] = useState(user.profilePicture || ""); // For image preview
+    const initialAvatar =
+        user?.profilePicture || user?.avatar || user?.profile_picture || "";
+    const [previewUrl, setPreviewUrl] = useState(initialAvatar); // For image preview
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
@@ -105,9 +108,12 @@ const EditProfile = ({ user, onUpdateProfile, onGoToMyProfile }) => {
                         {previewUrl && (
                             <div className="image-preview ">
                                 <img
-                                    src={previewUrl}
+                                    src={formatMediaUrl(previewUrl, "/assets/images/user.png")}
                                     alt="Profile Preview"
-                                    className="w-25 h-25 bg-cover bg-center bg-no-repeat rounded-full"
+                                    className="w-25 h-25 object-cover rounded-full"
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/assets/images/user.png";
+                                    }}
                                 />
                             </div>
                         )}

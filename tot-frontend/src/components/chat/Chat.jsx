@@ -1,26 +1,35 @@
 // src/components/chat/Chat.jsx
 import React, { useState, useEffect, useRef, useCallback } from "react";
-// Remove io import since we're using the passed socket
-// import io from 'socket.io-client';
 import axios from "axios";
+import { formatMediaUrl } from "../../utils/mediaUrl";
 import "./Chat.css";
 
-// Remove the constant SOCKET_SERVER_URL
-// const SOCKET_SERVER_URL = 'http://localhost:3001';
-const LARAVEL_API_BASE_URL = "http://localhost:8000/api";
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  const host = typeof window !== "undefined" && window.location.hostname ? window.location.hostname : "127.0.0.1";
+  if (host === "totumdy.com" || host.endsWith(".totumdy.com")) {
+    const proto = window.location.protocol || "https:";
+    return `${proto}//api.totumdy.com/api`;
+  }
+  return `http://${host}:8000/api`;
+};
 
-// Accept the onViewProfile, onlineUsers, isOtherUserOnline, and socket props
+const LARAVEL_API_BASE_URL = getApiBaseUrl();
+
 const Chat = ({
   sanctumToken,
   currentUserId,
   otherUserId,
   otherUserName,
+  otherUserAvatar,
   onViewProfile,
   onlineUsers,
   isOtherUserOnline,
   socket,
+  onBackToUserList,
 }) => {
-  // <-- Accept socket prop
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loadingHistory, setLoadingHistory] = useState(false);
@@ -70,8 +79,6 @@ const Chat = ({
         scrollToBottom();
       } catch (error) {
         console.error("Chat: Error fetching message history:", error);
-        console.error("Chat: Error response data:", error.response?.data);
-        console.error("Chat: Error response status:", error.response?.status);
         setMessages([]);
       } finally {
         setLoadingHistory(false);
@@ -120,10 +127,8 @@ const Chat = ({
             console.log("Chat: Updated optimistic message with server data");
             return updatedMessages;
           }
-          console.log("Chat: Ignoring duplicate message");
           return prevMessages;
         } else {
-          console.log("Chat: Added new real-time message");
           return [...prevMessages, message];
         }
       });
@@ -142,18 +147,13 @@ const Chat = ({
 
     // Cleanup: Remove listeners when component unmounts or dependencies change
     return () => {
-      console.log("Chat: Cleaning up listeners");
       socket.off("receiveMessage", handleReceiveMessage);
       socket.off("messageError", handleMessageError);
-      // Note: We don't leave the room here as the socket might be used elsewhere,
-      // and the server handles disconnection cleanup automatically.
     };
-  }, [socket, currentUserId, otherUserId]); // Re-run if socket, currentUserId, or otherUserId changes
+  }, [socket, currentUserId, otherUserId]);
 
   const handleSendMessage = useCallback(() => {
-    // Use useCallback for consistency
     if (newMessage.trim() && socket) {
-      // Use the passed socket
       const messageContent = newMessage.trim();
       const messageData = {
         sender_id: currentUserId,
@@ -161,7 +161,6 @@ const Chat = ({
         content: messageContent,
       };
 
-      console.log("Chat: Sending message optimistically");
       const tempMessage = {
         ...messageData,
         id: undefined,
@@ -170,16 +169,10 @@ const Chat = ({
       };
 
       setMessages((prevMessages) => [...prevMessages, tempMessage]);
-      console.log("Chat: Added temporary message to UI");
       scrollToBottom();
       setNewMessage("");
 
-      socket.emit("sendMessage", messageData); // Use the passed socket
-      console.log("Chat: Message emitted to server via main socket");
-    } else if (!socket) {
-      console.warn(
-        "Chat: Cannot send message, no socket connection available.",
-      );
+      socket.emit("sendMessage", messageData);
     }
   }, [newMessage, socket, currentUserId, otherUserId]);
 
@@ -192,20 +185,39 @@ const Chat = ({
 
   // Use the provided name or fallback
   const displayName = otherUserName || `User ${otherUserId || "Unknown"}`;
+  const rawAvatar =
+    otherUserAvatar ||
+    (typeof otherUserId === "object" ? otherUserId.avatar : null) ||
+    "/assets/images/user.png";
+  const avatarSrc = formatMediaUrl(rawAvatar, "/assets/images/user.png");
 
   return (
-    <section className="container w-full mx-auto order-2 lg:flex-8 rounded-3xl h-[calc(100vh-100px)] lg:h-[552px] lg:mr-4 my-4 bg-[#5978A433] font-balthazar py-4 min-w-0">
-      <div className="chat-container relative boxshadow  rounded-4xl px-3 sm:px-7 pt-4 mx-auto flex flex-col gap-2  w-full lg:w-120 h-full">
-        <div className="chat-header flex gap-3 border-b-2 border-b-cyan-50/70 -mx-7 px-5 pb-3">
-          {/* Make the user's name clickable */}
-          <div className="profile-avatar relative">
+    <section className="container w-full mx-auto order-2 lg:flex-8 rounded-3xl h-[calc(100dvh-135px)] lg:h-[calc(100vh-35px)] lg:mr-4 my-0 lg:my-4 bg-[#5978A433] font-balthazar py-2 lg:py-4 px-1 sm:px-2 lg:px-4 min-w-0 flex flex-col">
+      <div className="chat-container boxshadow rounded-3xl sm:rounded-4xl px-3 sm:px-7 pt-4 pb-3 mx-auto flex flex-col gap-2 w-full h-full">
+        {/* Chat Header */}
+        <div className="chat-header flex items-center gap-3 border-b-2 border-b-cyan-50/70 pb-3 flex-none">
+          {/* Mobile Back Button */}
+          {onBackToUserList && (
+            <button
+              onClick={onBackToUserList}
+              className="lg:hidden text-2xl text-[#646cff] font-bold p-1 -ml-1 cursor-pointer"
+              title="Back"
+              aria-label="Back"
+            >
+              ←
+            </button>
+          )}
+
+          <div className="profile-avatar relative flex-shrink-0">
             <img
-              className="w-12 h-12 rounded-xl "
-              // Use the profileUser's avatar field (returned by backend), fallback to placeholder if not available
-              src={otherUserId.avatar || "assets/images/user.png"} // Changed this line to use 'avatar'
-              alt={`${otherUserId.name || "User"}'s avatar`}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-cover"
+              src={avatarSrc}
+              alt={`${displayName}'s avatar`}
+              onError={(e) => {
+                e.currentTarget.src = "/assets/images/user.png";
+              }}
             />
-            {/* --- DISPLAY ONLINE STATUS --- */}
+            {/* Display Online Status */}
             <span
               className={`online-status-chat ${
                 isOtherUserOnline ? "online" : "offline"
@@ -223,24 +235,26 @@ const Chat = ({
 
           <span
             onClick={() => {
-              // Check if onViewProfile function exists and otherUserId is available
               if (onViewProfile && otherUserId) {
-                onViewProfile(otherUserId); // Call onViewProfile with the other user's ID
+                onViewProfile(
+                  typeof otherUserId === "object"
+                    ? otherUserId.id
+                    : otherUserId,
+                );
               }
             }}
-            className="cursor-pointer text-3xl text-[#646cff]  chicle-regular -mb-2"
-            // Use theme color
-            // Consider using a dedicated CSS class for better styling
+            className="cursor-pointer text-2xl sm:text-3xl text-[#646cff] chicle-regular leading-none truncate"
           >
             {displayName}
           </span>
-
-          {/* --- END DISPLAY --- */}
         </div>
 
-        <div className="chat-messages-container no-scrollbar mb-20">
+        {/* Message List */}
+        <div className="chat-messages-container no-scrollbar flex-1 overflow-y-auto py-2">
           {loadingHistory ? (
-            <div className="chat-placeholder">Loading messages...</div>
+            <div className="chat-placeholder font-balthazar text-lg my-auto text-center">
+              Loading messages...
+            </div>
           ) : messages.length > 0 ? (
             messages.map((msg) => {
               const isCurrentUser =
@@ -255,7 +269,9 @@ const Chat = ({
                 >
                   <div className="text-black">{msg.content}</div>
                   <span className="message-timestamp text-black">
-                    {new Date(msg.created_at).toLocaleTimeString([], {
+                    {new Date(
+                      msg.created_at || Date.now(),
+                    ).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
@@ -264,28 +280,30 @@ const Chat = ({
               );
             })
           ) : (
-            <div className="chat-placeholder font-balthazar text-lg">
+            <div className="chat-placeholder font-balthazar text-lg my-auto text-center">
               <i>Start the conversation with {displayName}...</i>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="chat-input-area absolute bottom-8 boxshadow py-2 px-3 rounded-2xl right-6 left-6 flex justify-between">
+        {/* Input Area */}
+        <div className="chat-input-area boxshadow py-2 px-3 rounded-2xl flex items-center justify-between gap-2 flex-none mt-auto">
           <input
-            className="outline-0 w-full"
+            className="outline-0 w-full bg-transparent text-black"
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             placeholder={`Message ${displayName}...`}
-            disabled={!socket || loadingHistory} // Disable if no socket
+            disabled={!socket || loadingHistory}
           />
 
           <button
-            className="send-btn w-6 h-6 bg-[url('/assets/images/send.png')] bg-cover bg-center cursor-pointer hover:bg-[url('/assets/images/sends.png')] hover:scale-105 duration-300"
+            className="send-btn w-6 h-6 bg-[url('/assets/images/send.png')] bg-cover bg-center cursor-pointer hover:bg-[url('/assets/images/sends.png')] hover:scale-105 duration-300 flex-shrink-0 disabled:opacity-40"
             onClick={handleSendMessage}
-            disabled={!newMessage.trim() || !socket || loadingHistory} // Disable if no socket or empty message
+            disabled={!newMessage.trim() || !socket || loadingHistory}
+            aria-label="Send"
           ></button>
         </div>
       </div>

@@ -230,6 +230,17 @@
   filter: brightness(1.2) saturate(1.5);
 }
 
+/* ============ Mobile Top Header ============ */
+.mobile-top-header {
+  position: relative;
+  z-index: 30;
+  transition: all 0.3s ease;
+}
+
+.mobile-top-header button:active {
+  transform: scale(0.97);
+}
+
 /* ============ Responsive: Mobile / tablet bottom navigation bar ============ */
 @media (max-width: 1023px) {
   .navbar {

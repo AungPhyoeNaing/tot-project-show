@@ -2,7 +2,19 @@
 import apiClient from "./apiClient";
 import axios from "axios"; // Keep axios for CSRF if needed
 
-const BASE_URL = "http://127.0.0.1:8000";
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_SERVER_BASE_URL) {
+    return import.meta.env.VITE_SERVER_BASE_URL;
+  }
+  const host = typeof window !== "undefined" && window.location.hostname ? window.location.hostname : "127.0.0.1";
+  if (host === "totumdy.com" || host.endsWith(".totumdy.com")) {
+    const proto = window.location.protocol || "https:";
+    return `${proto}//api.totumdy.com`;
+  }
+  return `http://${host}:8000`;
+};
+
+const BASE_URL = getBaseUrl();
 
 export const getCsrfToken = () => 
   axios.get(`${BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });

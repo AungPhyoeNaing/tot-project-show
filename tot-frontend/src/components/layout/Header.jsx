@@ -60,11 +60,39 @@ export default function Header({
   };
 
   return (
-    <header>
+    <header className="w-full lg:w-auto">
+      {/* Mobile Top Header: Displays TOT logo on mobile/tablet */}
+      <div className="mobile-top-header lg:hidden flex items-center justify-between px-4 py-2.5 bg-white/40 backdrop-blur-md border-b border-cyan-50/50 shadow-sm w-full">
+        <button
+          onClick={onGoToFeed}
+          className="flex items-center gap-2.5 focus:outline-none cursor-pointer bg-transparent border-0 p-0 text-left group"
+          aria-label="Go to Feed"
+        >
+          <span className="logoContainer w-10 h-10 rounded-full flex items-center justify-center font-bold overflow-hidden shadow-md ring-2 ring-white/60 group-hover:scale-105 transition-transform duration-200">
+            <img
+              className="w-full h-full object-cover rounded-full"
+              src="/tot.jpg"
+              alt="Trends of TUM Logo"
+            />
+          </span>
+          <span className="text-xl sm:text-2xl text-blue-900 cherry-bomb font-black tracking-wide">
+            Trends of TUM
+          </span>
+        </button>
+      </div>
+
       <nav className="navbar flex lg:flex-col w-full lg:w-20 lg:h-screen items-center justify-between lg:justify-start px-4 lg:px-8 py-2 lg:py-15 gap-2 lg:gap-9">
-        <div className="logo w-fit hidden lg:flex">
-          <span className="logoContainer w-12 h-12  flex items-center justify-center font-bold mx-auto mb-1">
-            <img className="object-cover rounded-full" src="tot.jpg" alt="" />
+        <div
+          className="logo w-fit hidden lg:flex cursor-pointer"
+          onClick={onGoToFeed}
+          title="Trends of TUM"
+        >
+          <span className="logoContainer w-12 h-12 flex items-center justify-center font-bold mx-auto mb-1">
+            <img
+              className="object-cover rounded-full shadow-md"
+              src="/tot.jpg"
+              alt="Trends of TUM Logo"
+            />
           </span>
         </div>
 

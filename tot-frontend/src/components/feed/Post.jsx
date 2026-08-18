@@ -8,6 +8,7 @@ import {
   getComments,
   sharePost,
 } from "../../api/postService";
+import { formatMediaUrl } from "../../utils/mediaUrl";
 import "./Post.css";
 
 // --- ReactionButton Component ---
@@ -372,13 +373,15 @@ const Post = ({
           onClick={() => onViewProfile && onViewProfile(post.user_id)}
         >
           <img
-            src={
-              post.user?.avatar ||
-              post.user?.profile_picture ||
-              "assets/images/users.png"
-            } // Use avatar or profile_picture, fallback to placeholder
+            src={formatMediaUrl(
+              post.user?.avatar || post.user?.profile_picture,
+              "/assets/images/user.png",
+            )}
             alt={`${post.user?.name || "User"}'s avatar`}
             className="post-author-avatar rounded-2xl w-12 h-12 object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/assets/images/user.png";
+            }}
           />
         </div>
 
@@ -440,7 +443,7 @@ const Post = ({
           <div className="post-media ">
             {post.media_type === "image" && (
               <img
-                src={post.media_url} /* max-h-60 */
+                src={formatMediaUrl(post.media_url)} /* max-h-60 */
                 alt="Post media"
                 className="w-full rounded-lg object-fit max-h-60"
               />
@@ -449,7 +452,7 @@ const Post = ({
             {post.media_type === "video" && (
               <video
                 controls
-                src={post.media_url}
+                src={formatMediaUrl(post.media_url)}
                 className="w-full rounded-lg"
                 preload="metadata"
               >
@@ -468,7 +471,7 @@ const Post = ({
                   borderRadius: "8px",
                 }}
               >
-                <audio controls src={post.media_url} style={{ width: "100%" }}>
+                <audio controls src={formatMediaUrl(post.media_url)} style={{ width: "100%" }}>
                   <span className="error-message text-xl text-red-500 cherry-bomb">
                     {" "}
                     Your browser does not support the audio tag.
@@ -494,13 +497,16 @@ const Post = ({
                 }}
               >
                 <img
-                  src={
+                  src={formatMediaUrl(
                     post.shared_post.user?.avatar ||
-                    post.shared_post.user?.profile_picture ||
-                    "assets/images/users.png"
-                  } // Avatar for shared post author
+                    post.shared_post.user?.profile_picture,
+                    "/assets/images/users.png",
+                  )} // Avatar for shared post author
                   alt={`${post.shared_post.user?.name || "User"} avatar`}
                   className="shared-post-author-avatar w-8 h-8 rounded-xl mr-2 object-cover" // Different class for sizing if needed
+                  onError={(e) => {
+                    e.currentTarget.src = "/assets/images/user.png";
+                  }}
                 />
                 <strong className="chicle-regular">
                   {post.shared_post.user?.name}
@@ -522,7 +528,7 @@ const Post = ({
                 >
                   {post.shared_post.media_type === "image" && (
                     <img
-                      src={post.shared_post.media_url}
+                      src={formatMediaUrl(post.shared_post.media_url)}
                       alt="Shared post media"
                       style={{
                         maxWidth: "100%",
@@ -536,7 +542,7 @@ const Post = ({
                   {post.shared_post.media_type === "video" && (
                     <video
                       controls
-                      src={post.shared_post.media_url}
+                      src={formatMediaUrl(post.shared_post.media_url)}
                       style={{
                         maxWidth: "100%",
                         maxHeight: "400px",
@@ -561,7 +567,7 @@ const Post = ({
                     >
                       <audio
                         controls
-                        src={post.shared_post.media_url}
+                        src={formatMediaUrl(post.shared_post.media_url)}
                         style={{ width: "100%" }}
                       >
                         <span className="error-message text-xl text-red-500 cherry-bomb">

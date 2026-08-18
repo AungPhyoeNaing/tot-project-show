@@ -39,8 +39,8 @@ export default function Login({
 
       <section className="auth-section absolute top-30 inset-4 lg:static">
         <div className="loginContainer outline-cyan-50 outline-1 rounded-3xl w-full mb-3 mx-auto px-5 sm:px-8 py-7 backdrop-blur-xl bg-white/20 shadow-xl">
-          <span className="logoContainer w-20 h-20  flex items-center justify-center font-bold mx-auto mb-1">
-            <img className="object-cover rounded-full" src="tot.jpg" alt="" />
+          <span className="logoContainer w-20 h-20 flex items-center justify-center font-bold mx-auto mb-1">
+            <img className="object-cover rounded-full shadow-md" src="/tot.jpg" alt="Trends of TUM Logo" />
           </span>
           <h2 className=" text-center text-3xl sm:text-4xl mb-2 cherry-bom text-transparent bg-teamcolor bg-clip-text  ">
             Welcome Back:D

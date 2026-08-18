@@ -26,14 +26,19 @@ const EVENTS = {
   MESSAGE_ERROR: 'messageError',
 };
 
-/* ---------- Middleware ---------- */
+/* ---------- Middleware & CORS ---------- */
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+
+const corsOriginHandler = (origin, callback) => {
+  // Allow all local network origins (localhost, 127.0.0.1, 192.168.x.x, 172.x.x.x, 10.x.x.x) and server-to-server
+  callback(null, true);
+};
+
+app.use(cors({ origin: corsOriginHandler, credentials: true }));
 
 /* ---------- Socket.IO ---------- */
 const io = new Server(server, {
-  cors: { origin: 'http://localhost:5173', methods: ['GET', 'POST'], credentials: true },
-  // Optional: add ping/pong timeout for faster disconnect detection
+  cors: { origin: corsOriginHandler, methods: ['GET', 'POST'], credentials: true },
   pingTimeout: 5000,
   pingInterval: 10000,
 });

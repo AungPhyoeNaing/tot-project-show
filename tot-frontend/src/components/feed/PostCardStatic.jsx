@@ -1,6 +1,7 @@
 import React from "react";
 //import "./Post.css"; // 👈 Reuse existing Post styling
 import "./PostCardStatic.css"; // 👈 New CSS for PostCardStatic
+import { formatMediaUrl } from "../../utils/mediaUrl";
 
 const CATEGORY_NAMES = {
     news: "News",
@@ -30,7 +31,7 @@ const PostCardStatic = ({ post }) => {
                     return (
                         <div className="post-media">
                             <img
-                                src={post.media_url}
+                                src={formatMediaUrl(post.media_url)}
                                 alt="Post media"
                                 className="media-preview"
                             />
@@ -41,7 +42,7 @@ const PostCardStatic = ({ post }) => {
                         <div className="post-media">
                             <video
                                 controls
-                                src={post.media_url}
+                                src={formatMediaUrl(post.media_url)}
                                 className="media-preview"
                                 preload="metadata"
                             >
@@ -56,7 +57,7 @@ const PostCardStatic = ({ post }) => {
                         <div className="post-media">
                             <audio
                                 controls
-                                src={post.media_url}
+                                src={formatMediaUrl(post.media_url)}
                                 className="audio-player"
                             >
                                 <span className="error-message text-lg text-red-500 cherry-bomb ">
@@ -77,7 +78,7 @@ const PostCardStatic = ({ post }) => {
                     return (
                         <div className="post-media">
                             <img
-                                src={post.shared_post.media_url}
+                                src={formatMediaUrl(post.shared_post.media_url)}
                                 alt="Shared post media"
                                 className="media-preview"
                             />
@@ -88,7 +89,7 @@ const PostCardStatic = ({ post }) => {
                         <div className="post-media">
                             <video
                                 controls
-                                src={post.shared_post.media_url}
+                                src={formatMediaUrl(post.shared_post.media_url)}
                                 className="media-preview"
                                 preload="metadata"
                             >
@@ -103,7 +104,7 @@ const PostCardStatic = ({ post }) => {
                         <div className="post-media">
                             <audio
                                 controls
-                                src={post.shared_post.media_url}
+                                src={formatMediaUrl(post.shared_post.media_url)}
                                 className="audio-player"
                             >
                                 <span className="error-message text-lg text-red-500 cherry-bomb">
@@ -128,9 +129,15 @@ const PostCardStatic = ({ post }) => {
                 <div className="mb-4 flex items-center">
                     <div className="post-avatar rounded-lg w-fit inline-block  mr-2 cursor-pointer">
                         <img
-                            src={post.user.avatar || "assets/images/user.png"}
-                            alt={`${post.user.name}'s avatar`}
-                            className="user-avatar w-10 h-10 rounded-lg"
+                            src={formatMediaUrl(
+                                post.user?.avatar || post.user?.profile_picture,
+                                "/assets/images/user.png",
+                            )}
+                            alt={`${post.user?.name || "User"}'s avatar`}
+                            className="user-avatar w-10 h-10 rounded-lg object-cover"
+                            onError={(e) => {
+                                e.currentTarget.src = "/assets/images/user.png";
+                            }}
                         />
                     </div>
                     <div className="post-header-info flex flex-col  ">
