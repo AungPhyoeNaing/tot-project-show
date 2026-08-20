@@ -429,8 +429,34 @@
                 <!-- Password Requests Tab -->
                 <div id="PasswordRequests" class="tab-content hidden">
                     <h2 class="text-2xl font-semibold text-gray-900 mb-4">Password Reset Requests</h2>
-                    <p class="text-gray-500">Content for password reset requests will be added here.</p>
-                    <!-- Future content will go here -->
+                    @if($passwordResetRequests->isEmpty())
+                        <p class="text-gray-500">No password reset requests yet.</p>
+                    @else
+                        <div class="overflow-x-auto bg-white shadow rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">TOT email</th>
+                                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Recovery email</th>
+                                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submitted</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @foreach($passwordResetRequests as $request)
+                                        <tr>
+                                            <td class="px-3 py-3 text-sm text-gray-900">{{ $request->email }}</td>
+                                            <td class="px-3 py-3 text-sm text-gray-500">{{ $request->recovery_email }}</td>
+                                            <td class="px-3 py-3 text-sm text-gray-500">{{ $request->message ?: '—' }}</td>
+                                            <td class="px-3 py-3 text-sm text-gray-500">{{ $request->status }}</td>
+                                            <td class="px-3 py-3 text-sm text-gray-500">{{ $request->created_at }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </main>

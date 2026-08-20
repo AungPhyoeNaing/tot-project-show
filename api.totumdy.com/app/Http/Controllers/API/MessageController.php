@@ -29,7 +29,7 @@ class MessageController extends Controller
     {
         $request->validate([
             'recipient_id' => 'required|exists:users,id',
-            'content' => 'required|string',
+            'content' => 'required|string|max:5000',
             // 'chat_id' => 'required|exists:chats,id', // If using chat rooms
         ]);
 

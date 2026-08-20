@@ -32,7 +32,7 @@ class MediaController extends Controller
 
         $extension = $file->getClientOriginalExtension();
         $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $uniqueFilename = $filename . '_' . time() . '.' . $extension;
+        $uniqueFilename = $filename . '_' . Str::random(12) . '.' . strtolower($extension);
 
         // Detect type from the actual MIME content, not the extension,
         // so JPEG variants like .jfif/.jpe are correctly classified as images.

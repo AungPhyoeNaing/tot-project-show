@@ -1,288 +1,203 @@
-# 🤖 OpenCode AI Agent Playbook: Local Server Setup & Execution
+# TrendsOfTUM-2025 — Project-show runbook
 
-> **AGENT DIRECTIVE**: This document is an automated execution runbook for **OpenCode** (and peer AI coding assistants) to provision, configure, serve, and verify the full-stack **TrendsOfTUM-2025** social media application from scratch on any operating system.
+This guide runs the three application services on one machine and optionally exposes them through the public domain.
 
----
+## Architecture
 
-## 🎯 Target System State
+| Service | Directory | Local address |
+| --- | --- | --- |
+| React/Vite frontend | `tot-frontend/` | `http://localhost:5173` |
+| Laravel API | `api.totumdy.com/` | `http://127.0.0.1:8000` |
+| Socket.IO server | `chat-server-nodejs-v2/` | `http://localhost:3001` |
 
-You must bring the application to the following operational state:
+Optional public routing is:
 
-| Subsystem | Working Directory | Target Port / Protocol | Health Check / Smoke Test |
-| :--- | :--- | :--- | :--- |
-| **Backend REST API** | `api.totumdy.com/` | `http://127.0.0.1:8000` | `GET /api/posts` returns HTTP 401 JSON |
-| **Real-Time Chat Server** | `chat-server-nodejs-v2/` | `http://localhost:3001` | `GET /socket.io/?EIO=4&transport=polling` returns `sid` |
-| **Frontend Web App** | `tot-frontend/` | `http://localhost:5173` | `GET /` returns HTTP 200 HTML |
-| *(Optional) Custom Domain* | Workspace Root | `https://totumdy.com` | Caddy + Cloudflare Tunnel `tot-server` |
-
----
-
-## 🧭 Execution Workflow for OpenCode Agent
-
-```mermaid
-graph TD
-    A["Phase 1: Environment & Dependency Check"] --> B["Phase 2: Install Missing System Packages"]
-    B --> C["Phase 3: Backend API Setup (Laravel + SQLite)"]
-    C --> D["Phase 4: Real-time Chat Server Setup (Node.js)"]
-    D --> E["Phase 5: Frontend Client Setup (Vite React)"]
-    E --> F["Phase 6: Launch Background Daemons"]
-    F --> G["Phase 7: Run Verification Smoke Tests"]
+```text
+https://totumdy.com       -> localhost:5173
+https://api.totumdy.com   -> localhost:8000
+https://chat.totumdy.com  -> localhost:3001
 ```
 
----
+Cloudflare Tunnel forwards traffic to the local machine and Caddy performs the host-based reverse proxying. The application is still running locally; stopping the local processes or tunnel makes the public domain unavailable.
 
-## 📋 Phase 1: Environment & Dependency Check
+## Data persistence — important
 
-Run these non-interactive commands to verify whether the host machine has the required toolchains:
+Git stores source code, migrations, and seeders. It does not automatically store runtime users, posts, messages, uploaded media, or Sanctum tokens.
+
+Choose one of these modes:
+
+### Shared-data mode (recommended for multiple devices)
+
+Use one reachable MySQL/MariaDB/PostgreSQL database and configure the same database credentials in each device’s untracked `api.totumdy.com/.env`. The database, not Git, becomes the source of truth, so registered users and posts remain available from every device.
+
+Uploaded media must also use shared storage (a shared disk, NAS, or S3-compatible bucket). Local `storage/app/public` is only local to one machine.
+
+Example MySQL settings:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=your-db-host
+DB_PORT=3306
+DB_DATABASE=tot_show
+DB_USERNAME=tot_app
+DB_PASSWORD=use-a-real-secret
+FILESYSTEM_DISK=public
+```
+
+### Local-demo mode
+
+SQLite is convenient for a single-machine presentation. It persists on that machine, but a new clone creates a different database. Run `php artisan migrate --seed` only for a new database; use `php artisan migrate` for an existing database. Never use `migrate:fresh` if you need to preserve users or posts.
+
+### Manual transfer mode
+
+To move a local demo to another device, stop Laravel, copy the SQLite file and `api.totumdy.com/storage/app/public/`, then restore both before starting the services. Committing a live SQLite file to Git is possible for a small demo, but it creates merge conflicts and can expose user data; it is not a shared live database.
+
+If Git-only portability is required for a sanitized project snapshot, stop the services and force-add the ignored runtime files:
 
 ```bash
-# Check runtime binaries
-git --version
-node -v
-npm -v
-php -v
-composer --version
-
-# Check required PHP extensions (pdo_sqlite, sqlite3, curl, fileinfo, gd, openssl, mbstring, zip)
-php -m
+git add -f api.totumdy.com/database/database.sqlite
+git add -f api.totumdy.com/storage/app/public/
+git commit -m "Update project-show data snapshot"
+git push
 ```
 
----
+On another device, pull the commit, copy the snapshot into the same paths, run `php artisan migrate` (not `migrate:fresh`), and log in again. New users/posts only become available to other devices after the updated snapshot is committed and pushed. Never use this mode with real private data or production credentials; shared-data mode is the correct multi-device solution.
 
-## 📦 Phase 2: Install Missing System Packages (If Missing)
+## Prerequisites
 
-If any prerequisite is missing on a fresh laptop, run the appropriate non-interactive OS install commands:
+- PHP 8.1+, Composer 2
+- Node.js 20+ and npm
+- Git
+- PHP extensions: `pdo_sqlite`/`sqlite3` for SQLite, plus `curl`, `fileinfo`, `gd`, `mbstring`, `openssl`, `zip`
+- Optional public mode: Caddy, `cloudflared`, and DNS/tunnel configuration
 
-### 🪟 Windows (PowerShell with WinGet)
-```powershell
-# Install Node.js LTS, PHP 8.2, Composer, and Git non-interactively
-winget install --id Git.Git -e --source winget --accept-source-agreements --accept-package-agreements
-winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-source-agreements --accept-package-agreements
-winget install --id PHP.PHP.8.2 -e --source winget --accept-source-agreements --accept-package-agreements
-winget install --id Composer.Composer -e --source winget --accept-source-agreements --accept-package-agreements
+## First-time setup
 
-# Ensure required extensions are active in php.ini:
-# (pdo_sqlite, sqlite3, curl, fileinfo, gd, openssl, mbstring, zip)
-```
-
-> ⚠️ **Windows OpenCode Notice**: Always execute `npm.cmd` / `npx.cmd` instead of `npm` / `npx` in PowerShell to bypass the script execution policy (`npm.ps1 cannot be loaded`).
-
-### 🍏 macOS (Homebrew)
-```bash
-brew install git node php@8.2 composer
-brew link --force --overwrite php@8.2
-```
-
-### 🐧 Linux (Ubuntu / Debian)
-```bash
-sudo apt-get update && sudo apt-get install -y curl git unzip software-properties-common
-sudo add-apt-repository -y ppa:ondrej/php && sudo apt-get update
-sudo apt-get install -y php8.2-cli php8.2-sqlite3 php8.2-curl php8.2-mbstring php8.2-xml php8.2-zip php8.2-gd php8.2-fileinfo
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-curl -sS https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer
-```
-
----
-
-## 🛠️ Phase 3: Setup Backend API (`api.totumdy.com`)
-
-Execute in `api.totumdy.com/`:
+### 1. Laravel API
 
 ```bash
 cd api.totumdy.com
-
-# 1. Install PHP dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# 2. Setup Environment Variables (.env)
-# Create .env if missing and ensure DB_CONNECTION=sqlite and local URLs are configured
+cp .env.example .env
+php artisan key:generate
 ```
 
-**Required `.env` content for `api.totumdy.com`:**
+For local SQLite, edit `.env`:
+
 ```dotenv
-APP_NAME=TrendsOfTUM
 APP_ENV=local
-APP_KEY=base64:2hvc/7fhjawRfHbOAXT5nsm8Ly8Dw0BL8GZuCiCEXnU=
 APP_URL=http://127.0.0.1:8000
-
-LOG_CHANNEL=stack
-LOG_LEVEL=debug
-
 DB_CONNECTION=sqlite
-
+DB_DATABASE=/absolute/path/to/api.totumdy.com/database/database.sqlite
 FILESYSTEM_DISK=public
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-
 FRONTEND_URL=http://localhost:5173
-SANCTUM_STATEFUL_DOMAINS=totumdy.com,api.totumdy.com,chat.totumdy.com,localhost,localhost:5173,127.0.0.1,127.0.0.1:8000,127.0.0.1:5173
-SESSION_DOMAIN=localhost
+NODE_SERVER_URL=http://localhost:3001
 NODE_SERVER_KEY=secret-tot-key
 ```
 
-```bash
-# 3. Generate key if needed
-php artisan key:generate --force
+Create the SQLite file if needed:
 
-# 4. Ensure SQLite database file exists
+```bash
 mkdir -p database
 touch database/database.sqlite
-
-# 5. Run Database Migrations & Seeders
-php artisan migrate --seed --force
-
-# 6. Create Storage Symlink (CRITICAL for images/audio/video uploads)
-php artisan storage:link --force
-
-cd ..
 ```
 
----
+PowerShell:
 
-## 💬 Phase 4: Setup Real-Time Chat Server (`chat-server-nodejs-v2`)
+```powershell
+if (!(Test-Path database/database.sqlite)) { New-Item -ItemType File database/database.sqlite -Force }
+```
 
-Execute in `chat-server-nodejs-v2/`:
+Then run:
 
 ```bash
-cd chat-server-nodejs-v2
-
-# 1. Install Node dependencies
-npm install --no-audit --no-fund
-# (On Windows: npm.cmd install --no-audit --no-fund)
-
-# 2. Configure .env
+php artisan migrate --seed
+php artisan storage:link
 ```
 
-**Required `.env` content for `chat-server-nodejs-v2`:**
+For an existing database, use `php artisan migrate` instead of `migrate --seed`.
+
+### 2. Socket.IO server
+
+```bash
+cd ../chat-server-nodejs-v2
+npm install --no-audit --no-fund
+```
+
+Create `.env`:
+
 ```dotenv
 PORT=3001
 NODE_SERVER_KEY=secret-tot-key
+LARAVEL_API_BASE_URL=http://localhost:8000/api
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://totumdy.com,https://www.totumdy.com
 ```
 
-```bash
-cd ..
-```
-
----
-
-## 🎨 Phase 5: Setup Frontend Client (`tot-frontend`)
-
-Execute in `tot-frontend/`:
+### 3. React frontend
 
 ```bash
-cd tot-frontend
-
-# 1. Install npm dependencies
+cd ../tot-frontend
 npm install --no-audit --no-fund
-# (On Windows: npm.cmd install --no-audit --no-fund)
-
-# 2. Test build integrity
 npm run build
-# (On Windows: npm.cmd run build)
-
-cd ..
 ```
 
----
+Local development needs no frontend environment overrides. For public-domain development, create `.env` before starting Vite:
 
-## 🚀 Phase 6: Launch All 3 Background Services
+```dotenv
+VITE_API_BASE_URL=https://api.totumdy.com/api
+VITE_SERVER_BASE_URL=https://api.totumdy.com
+VITE_SOCKET_URL=https://chat.totumdy.com
+```
 
-OpenCode should launch each process in the background / separate tasks:
+## Start the services
 
-### Service 1: Laravel API Backend
-- **CWD**: `api.totumdy.com`
-- **Command**: `php artisan serve --host=127.0.0.1 --port=8000`
-- **Log Verification**: Must output `Server running on [http://127.0.0.1:8000]`
-
-### Service 2: Socket.IO Chat Server
-- **CWD**: `chat-server-nodejs-v2`
-- **Command**: `node server.js`
-- **Log Verification**: Must output `[Server] Running on port 3001`
-
-### Service 3: React Vite Frontend Dev Server
-- **CWD**: `tot-frontend`
-- **Command**: `npx vite --host` *(Windows: `npx.cmd vite --host`)*
-- **Log Verification**: Must output `VITE ready ... Local: http://localhost:5173/`
-
----
-
-## 🌐 Optional: Custom Domain & Cloudflare Tunnel (`totumdy.com`)
-
-To serve via domain `https://totumdy.com`:
+Use three terminals:
 
 ```bash
-# Service 4: Cloudflare Tunnel
-cloudflared tunnel run tot-server
+# Terminal 1
+cd api.totumdy.com
+php artisan serve --host=127.0.0.1 --port=8000
 
-# Service 5: Caddy Reverse Proxy (HTTPS)
+# Terminal 2
+cd chat-server-nodejs-v2
+node server.js
+
+# Terminal 3
+cd tot-frontend
+npm run dev -- --host 0.0.0.0
+```
+
+On Windows PowerShell, use `npm.cmd` if the execution policy blocks `npm`:
+
+```powershell
+npm.cmd run dev -- --host 0.0.0.0
+```
+
+## Optional public-domain mode
+
+With all three local services running:
+
+```bash
+cloudflared tunnel run tot-server
 caddy run --config Caddyfile
 ```
 
----
+Confirm the tunnel routes the three hostnames to the local Caddy instance. Use `https://totumdy.com` only after the local frontend, API, chat server, tunnel, and Caddy are all running.
 
-## 🧪 Phase 7: Automated Verification & Smoke Tests
+## Smoke checks
 
-Run these assertions to verify full-stack operational readiness:
-
-### 1. Test Vite Frontend
 ```powershell
-# PowerShell
-(Invoke-WebRequest -Uri "http://localhost:5173" -UseBasicParsing).StatusCode
-# Expected output: 200
-```
-```bash
-# Bash
-curl -s -I http://localhost:5173 | grep "200 OK"
+(Invoke-WebRequest http://localhost:5173 -UseBasicParsing).StatusCode
+(Invoke-WebRequest http://127.0.0.1:8000/api/posts -Headers @{Accept='application/json'} -SkipHttpErrorCheck -UseBasicParsing).StatusCode
+(Invoke-WebRequest 'http://localhost:3001/socket.io/?EIO=4&transport=polling' -UseBasicParsing).StatusCode
 ```
 
-### 2. Test Laravel API
-```powershell
-# PowerShell
-(Invoke-WebRequest -Uri "http://127.0.0.1:8000/api/posts" -Headers @{"Accept"="application/json"} -UseBasicParsing -SkipHttpErrorCheck).StatusCode
-# Expected output: 401 (Sanctum unauthenticated response)
-```
-```bash
-# Bash
-curl -s -I -H "Accept: application/json" http://127.0.0.1:8000/api/posts | grep "401"
-```
+Expected results are `200`, `401`, and `200` respectively. The API `401` confirms Sanctum protection is active. Use the frontend registration form for a real login test; seeders create random showcase users rather than fixed email addresses.
 
-### 3. Test Authentication Endpoint with Demo Account
-```powershell
-# PowerShell
-Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/login" -Method Post `
-  -Headers @{ "Accept"="application/json"; "Content-Type"="application/json" } `
-  -Body '{"email":"porter98@example.org","password":"password"}'
-# Expected output: JSON object containing user info and bearer token
-```
+## Troubleshooting
 
-### 4. Test Real-Time WebSocket Handshake
-```powershell
-# PowerShell
-(Invoke-WebRequest -Uri "http://localhost:3001/socket.io/?EIO=4&transport=polling" -UseBasicParsing).Content
-# Expected output contains: "sid":"...", "pingInterval":10000
-```
-
----
-
-## 🔑 Default Test Accounts (Pre-Seeded)
-
-| Email | Password | Details |
-| :--- | :--- | :--- |
-| `porter98@example.org` | `password` | Seeded Demo User |
-| `rgibson@example.org` | `password` | Seeded Demo User |
-| `lyundt@example.net` | `password` | Seeded Demo User |
-
----
-
-## 🩹 Agent Self-Healing & Troubleshooting Guide
-
-| Issue Encountered | Root Cause | OpenCode Automated Fix |
-| :--- | :--- | :--- |
-| `npm.ps1 cannot be loaded... execution policy` | PowerShell script restriction on Windows | Replace `npm` / `npx` with `npm.cmd` / `npx.cmd` in all tool calls. |
-| `could not find driver (SQL: select * from users)` | Missing PHP SQLite extension | Enable `extension=pdo_sqlite` and `extension=sqlite3` in `php.ini`. |
-| `Port 8000 / 3001 / 5173 is already in use` | Zombie or lingering processes from previous session | Run `Stop-Process -Name node, php -Force` (Windows) or `pkill -f 'node\|artisan'` (Linux/macOS). |
-| Uploaded images or user avatars return 404 | Missing public storage symlink | Run `php artisan storage:link --force` in `api.totumdy.com`. |
-| API returns 500 `Route [login] not defined` | Missing `Accept: application/json` header | Ensure HTTP requests pass header `Accept: application/json` to receive 401 JSON instead of redirect. |
-| Real-time chat messages fail to deliver | Secret key mismatch or Node server down | Confirm `chat-server-nodejs-v2` is running on port 3001 and `NODE_SERVER_KEY=secret-tot-key` matches in both `.env` files. |
+- `could not find driver`: enable `pdo_sqlite`/`sqlite3`, or verify remote database credentials.
+- Media/avatar `404`: run `php artisan storage:link` and confirm `FILESYSTEM_DISK=public`.
+- Chat cannot reach Laravel: verify `LARAVEL_API_BASE_URL`, `NODE_SERVER_URL`, and `NODE_SERVER_KEY`.
+- Public domain unavailable: verify all three local services, Caddy, Cloudflare Tunnel, DNS, and firewall rules.
+- Data missing on another device: local SQLite and local media are machine-specific; use shared-data mode or manually transfer the database and media directory.

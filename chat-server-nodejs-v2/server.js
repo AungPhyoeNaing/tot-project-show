@@ -12,6 +12,17 @@ const axios = require('axios');
 const app = express();
 const server = http.createServer(app);
 
+const laravelApiBaseUrl = process.env.LARAVEL_API_BASE_URL || 'http://localhost:8000/api';
+const configuredOrigins = (process.env.CORS_ORIGINS || [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://totumdy.com',
+  'https://www.totumdy.com',
+].join(','))
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 /* ---------- Constants ---------- */
 const EVENTS = {
   USER_ONLINE: 'userOnline',
@@ -30,8 +41,17 @@ const EVENTS = {
 app.use(express.json());
 
 const corsOriginHandler = (origin, callback) => {
-  // Allow all local network origins (localhost, 127.0.0.1, 192.168.x.x, 172.x.x.x, 10.x.x.x) and server-to-server
-  callback(null, true);
+  // Server-to-server requests have no Origin header.
+  if (!origin) return callback(null, true);
+
+  const localOrigin = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|172\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?$/;
+  const domainOrigin = /^https?:\/\/([a-zA-Z0-9-]+\.)*totumdy\.com(:\d+)?$/;
+
+  if (configuredOrigins.includes(origin) || localOrigin.test(origin) || domainOrigin.test(origin)) {
+    return callback(null, true);
+  }
+
+  return callback(new Error('Origin not allowed by CORS'));
 };
 
 app.use(cors({ origin: corsOriginHandler, credentials: true }));
@@ -49,7 +69,7 @@ const connectedUsers = new Map();
 
 /* ---------- DRY AXIOS INSTANCE ---------- */
 const laravel = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: laravelApiBaseUrl,
   timeout: 5000,
 });
 laravel.interceptors.request.use((cfg) => {
@@ -125,13 +145,19 @@ io.on('connection', (socket) => {
       const sads = post.sads_count ?? 0;
       const angries = post.angries_count ?? 0;
 
-      io.emit(EVENTS.REACTION_UPDATED, {
+      const reactionUpdate = {
         post_id: postId,
         likes_count: likes,
         sads_count: sads,
         angries_count: angries,
         reactions_count: likes + sads + angries,
-        user_reaction: myReactRes.data?.type || null
+      };
+
+      // Counts are public; the acting user's reaction is private.
+      socket.broadcast.emit(EVENTS.REACTION_UPDATED, reactionUpdate);
+      socket.emit(EVENTS.REACTION_UPDATED, {
+        ...reactionUpdate,
+        user_reaction: myReactRes.data?.type || null,
       });
     } catch (e) {
       console.error(`[Reaction] Failed for post ${postId}, user ${uid}:`, e.message);
@@ -142,6 +168,7 @@ io.on('connection', (socket) => {
   socket.on('postCommentAdded', ({ postId, comment }) => {
     if (typeof postId !== 'number' || postId <= 0 || !comment || typeof comment !== 'object') return;
     if (!comment.body || typeof comment.body !== 'string') return;
+    if (comment.user_id !== uid) return;
 
     io.emit(EVENTS.COMMENT_ADDED, { ...comment, post_id: postId });
   });

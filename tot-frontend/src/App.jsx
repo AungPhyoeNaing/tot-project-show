@@ -463,7 +463,9 @@ export default function App() {
                                     sads_count: data.sads_count,
                                     angries_count: data.angries_count,
                                     reactions_count: data.reactions_count,
-                                    user_reaction: data.user_reaction, // Reflects the current user's reaction for this post
+                                    ...(Object.prototype.hasOwnProperty.call(data, "user_reaction")
+                                        ? { user_reaction: data.user_reaction }
+                                        : {}),
                                 };
                             }
                             return post;

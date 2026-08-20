@@ -111,26 +111,29 @@ const Chat = ({
         message,
       );
       setMessages((prevMessages) => {
-        const alreadyExists = prevMessages.some(
-          (msg) =>
-            (msg.id && msg.id === message.id) ||
-            (msg.tempId && msg.tempId === message.tempId),
+        const existingIndex = prevMessages.findIndex(
+          (m) => m.id && message.id && m.id === message.id,
         );
 
-        if (alreadyExists) {
-          const existingIndex = prevMessages.findIndex(
-            (m) => m.tempId && message.id && m.tempId === `temp-${message.id}`,
-          );
-          if (existingIndex !== -1) {
-            const updatedMessages = [...prevMessages];
-            updatedMessages[existingIndex] = message;
-            console.log("Chat: Updated optimistic message with server data");
-            return updatedMessages;
-          }
-          return prevMessages;
-        } else {
-          return [...prevMessages, message];
+        if (existingIndex !== -1) return prevMessages;
+
+        // Replace the sender's optimistic bubble with the persisted message.
+        const optimisticIndex = prevMessages.findIndex(
+          (m) =>
+            m.tempId &&
+            !m.id &&
+            m.sender_id === message.sender_id &&
+            m.recipient_id === message.recipient_id &&
+            m.content === message.content,
+        );
+
+        if (optimisticIndex !== -1) {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[optimisticIndex] = message;
+          return updatedMessages;
         }
+
+        return [...prevMessages, message];
       });
       scrollToBottom();
     };
@@ -143,11 +146,13 @@ const Chat = ({
 
     // Attach listeners
     socket.on("receiveMessage", handleReceiveMessage);
+    socket.on("messageSent", handleReceiveMessage);
     socket.on("messageError", handleMessageError);
 
     // Cleanup: Remove listeners when component unmounts or dependencies change
     return () => {
       socket.off("receiveMessage", handleReceiveMessage);
+      socket.off("messageSent", handleReceiveMessage);
       socket.off("messageError", handleMessageError);
     };
   }, [socket, currentUserId, otherUserId]);

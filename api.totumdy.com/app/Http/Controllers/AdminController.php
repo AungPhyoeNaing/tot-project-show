@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\UserReport; // Import the UserReport model
 use App\Models\User; // Import the User model
 use App\Models\Post; // Import the Post model
+use App\Models\PasswordResetRequest;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
@@ -83,7 +85,11 @@ class AdminController extends Controller
                      ->orderBy('created_at', 'desc')
                      ->get();
 
-        return view('admin_panel', compact('reports', 'users', 'posts')); // Pass reports, users, and posts to the view
+        $passwordResetRequests = Schema::hasTable('password_reset_requests')
+            ? PasswordResetRequest::orderBy('created_at', 'desc')->get()
+            : collect();
+
+        return view('admin_panel', compact('reports', 'users', 'posts', 'passwordResetRequests')); // Pass admin data to the view
     }
 
     /**

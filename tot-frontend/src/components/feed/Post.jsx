@@ -31,14 +31,14 @@ const ReactionButton = ({
       imgactive = "/assets/images/happycolor.png"; // active same as hover
       break;
     case "sad":
-      img = "/assets/images/angry.png";
-      imghover = "/assets/images/angrycolor.png";
-      imgactive = "/assets/images/angrycolor.png";
-      break;
-    case "angry":
       img = "/assets/images/sad.png";
       imghover = "/assets/images/sadcolor.png";
       imgactive = "/assets/images/sadcolor.png";
+      break;
+    case "angry":
+      img = "/assets/images/angry.png";
+      imghover = "/assets/images/angrycolor.png";
+      imgactive = "/assets/images/angrycolor.png";
       break;
     default:
       img = "";

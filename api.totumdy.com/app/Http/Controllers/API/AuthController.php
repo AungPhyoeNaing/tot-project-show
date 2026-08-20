@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth; // Import Auth facade
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -49,14 +51,21 @@ class AuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        Http::post('http://localhost:3001/api/notify-login', [
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email, // Send the @tot.com email
-                'is_following' => false, // default, since they're new to other users' lists
-            ]
-        ]);
+        try {
+            Http::timeout(2)
+                ->withHeaders(['x-api-key' => env('NODE_SERVER_KEY')])
+                ->post(rtrim(env('NODE_SERVER_URL', 'http://localhost:3001'), '/') . '/api/notify-login', [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email, // Send the @tot.com email
+                        'is_following' => false, // default, since they're new to other users' lists
+                    ]
+                ]);
+        } catch (\Throwable $e) {
+            // Registration must still succeed if the optional real-time server is offline.
+            report($e);
+        }
 
         return response()->json([
             'user' => $user,
@@ -170,18 +179,32 @@ class AuthController extends Controller
             $user->name = $request->name;
         }
 
+        $oldAvatar = null;
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $oldAvatar = $user->avatar;
+            $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                . '_' . Str::random(12) . '.' . strtolower($file->extension());
             $path = $file->storeAs('uploads/image', $filename, 'public');
-            $user->avatar = url(\Illuminate\Support\Facades\Storage::url($path));
+            $user->avatar = url(Storage::url($path));
         }
 
         $user->save();
+        $this->deleteLocalMedia($oldAvatar);
 
         return response()->json([
             'message' => 'Profile updated successfully',
             'user' => $user
         ]);
+    }
+
+    private function deleteLocalMedia(?string $mediaUrl): void
+    {
+        $path = $mediaUrl ? parse_url($mediaUrl, PHP_URL_PATH) : null;
+        if (!$path || !str_starts_with($path, '/storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($path, strlen('/storage/')));
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Reaction;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -23,18 +25,17 @@ class PostController extends Controller
                 'user:id,name,email,avatar',
                 'sharedPost.user:id,name,email,avatar'
             ])
-            ->withCount(['reactions', 'comments', 'shares'])
+            ->withCount([
+                'reactions',
+                'comments',
+                'shares',
+                'reactions as likes_count' => fn ($query) => $query->where('type', 'like'),
+                'reactions as sads_count' => fn ($query) => $query->where('type', 'sad'),
+                'reactions as angries_count' => fn ($query) => $query->where('type', 'angry'),
+            ])
             ->latest();
 
         $posts = $postsQuery->get();
-
-        // --- Add specific reaction type counts for each post ---
-        $posts->each(function ($post) {
-            $post->likes_count = $post->reactions->where('type', 'like')->count();
-            $post->sads_count = $post->reactions->where('type', 'sad')->count();
-            $post->angries_count = $post->reactions->where('type', 'angry')->count();
-        });
-        // --- End adding specific counts ---
 
         // --- Efficiently fetch and append user's reaction for all posts ---
         if ($userId) {
@@ -64,28 +65,52 @@ class PostController extends Controller
     {
         $posts = Post::where('user_id', $user->id)
             ->with('user', 'sharedPost.user')
+            ->withCount([
+                'reactions',
+                'comments',
+                'shares',
+                'reactions as likes_count' => fn ($query) => $query->where('type', 'like'),
+                'reactions as sads_count' => fn ($query) => $query->where('type', 'sad'),
+                'reactions as angries_count' => fn ($query) => $query->where('type', 'angry'),
+            ])
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($post) {
-                // Attach reaction counts
-                $post->likes_count = $post->reactions->where('type', 'like')->count();
-                $post->sads_count = $post->reactions->where('type', 'sad')->count();
-                $post->angries_count = $post->reactions->where('type', 'angry')->count();
-                $post->reactions_count = $post->reactions->count();
-                $post->comments_count = $post->comments->count();
-                $post->shares_count = $post->shares->count();
+            ->get();
 
-                // Attach current user's reaction (if authenticated)
-                if (auth()->check()) {
-                    $userReaction = $post->reactions->firstWhere('user_id', auth()->id());
-                    $post->user_reaction = $userReaction ? $userReaction->type : null;
-                }
+        $userReactions = auth()->check()
+            ? Reaction::where('user_id', auth()->id())
+                ->whereIn('post_id', $posts->pluck('id'))
+                ->pluck('type', 'post_id')
+            : collect();
 
-                // ✅ media_url and media_type are DB columns → auto-included in JSON
-                return $post;
-            });
+        $posts->each(function ($post) use ($userReactions) {
+            $post->user_reaction = $userReactions->get($post->id);
+        });
 
         return response()->json($posts);
+    }
+
+    /**
+     * Display one post for real-time clients and other focused views.
+     */
+    public function show(Post $post)
+    {
+        $post->load([
+            'user:id,name,email,avatar',
+            'sharedPost.user:id,name,email,avatar',
+        ])->loadCount([
+            'reactions',
+            'comments',
+            'shares',
+            'reactions as likes_count' => fn ($query) => $query->where('type', 'like'),
+            'reactions as sads_count' => fn ($query) => $query->where('type', 'sad'),
+            'reactions as angries_count' => fn ($query) => $query->where('type', 'angry'),
+        ]);
+
+        $post->user_reaction = auth()->check()
+            ? $post->reactions()->where('user_id', auth()->id())->value('type')
+            : null;
+
+        return response()->json($post);
     }
 
     /**
@@ -140,8 +165,19 @@ class PostController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        $this->deleteLocalMedia($post->media_url);
         $post->delete();
         return response()->json(null, 204);
+    }
+
+    private function deleteLocalMedia(?string $mediaUrl): void
+    {
+        $path = $mediaUrl ? parse_url($mediaUrl, PHP_URL_PATH) : null;
+        if (!$path || !str_starts_with($path, '/storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($path, strlen('/storage/')));
     }
 
     /**
@@ -153,6 +189,7 @@ class PostController extends Controller
         $sharedPostEntry = Auth::user()->posts()->create([
             'body' => '',
             'shared_post_id' => $post->id,
+            'category' => $post->category,
         ]);
 
         $sharedPostEntry->load([
