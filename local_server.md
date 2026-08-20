@@ -2,6 +2,9 @@
 
 This document provides complete, step-by-step instructions to set up, configure, serve, and run the **TrendsOfTUM-2025** application on your local machine, including both direct local access (`localhost`) and domain/tunnel access (`totumdy.com`).
 
+> 💡 **For AI Coding Agents (OpenCode, Claude Code, etc.) & Fresh Machine Setup**:  
+> See the dedicated, automated protocol in [`AGENT_INSTALL.md`](AGENT_INSTALL.md) for non-interactive OS package installation commands and automated smoke test scripts.
+
 ---
 
 ## 🏗️ Architecture & Ports Overview
