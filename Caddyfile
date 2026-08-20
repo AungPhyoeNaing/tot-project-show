@@ -1,19 +1,20 @@
 # Trends of TUM - Local Development Reverse Proxy (Caddyfile)
 
 # 1. Frontend Web App (Vite React)
-totumdy.com {
+totomdy.com, totumdy.com {
 	tls internal
 	reverse_proxy localhost:5173
 }
 
 # 2. Backend REST API (Laravel)
-api.totumdy.com {
+api.totomdy.com, api.totumdy.com {
 	tls internal
 	reverse_proxy localhost:8000
 }
 
 # 3. Real-time Chat / Socket.IO Server
-chat.totumdy.com {
+chat.totomdy.com, chat.totumdy.com {
 	tls internal
 	reverse_proxy localhost:3001
 }
+
